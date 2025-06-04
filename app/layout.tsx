@@ -10,6 +10,7 @@ import {
 
 import localFont from "next/font/local";
 import "./globals.css";
+import { ModalProvider } from '@/provider/modal-provider';
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -36,6 +37,7 @@ export default function RootLayout({
        <ClerkProvider>
       <html lang="en">
         <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+          <ModalProvider />
           <header className="flex justify-end items-center p-4 gap-6 h-16  bg-white/10 backdrop-blur-md">
             <SignedOut>
               <div className='hover:text-[#08a4a7]'>
