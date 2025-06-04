@@ -8,7 +8,7 @@ WORKDIR /app
 COPY package.json package-lock.json ./
 
 # Install dependencies
-RUN npm install
+RUN npm install --verbose
 
 # Salin semua file proyek ke dalam container
 COPY . .
