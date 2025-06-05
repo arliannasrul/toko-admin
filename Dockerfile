@@ -5,7 +5,7 @@ FROM node:18-alpine
 WORKDIR /app
 
 # Salin file dependency terlebih dahulu (agar cache efisien)
-COPY package.json package-lock.json ./
+COPY package* .
 
 # Install dependencies
 RUN npm install --verbose
