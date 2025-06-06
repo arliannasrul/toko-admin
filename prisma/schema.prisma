@@ -14,8 +14,8 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model store {
-  id        String   @id @default(uuid())
+model Store {
+  id        String   @id @default(cuid())
   name      String
   userId    String
   createdAt DateTime @default(now())
