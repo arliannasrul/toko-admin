@@ -10,7 +10,8 @@ import {
 
 import localFont from "next/font/local";
 import "./globals.css";
-import { ModalProvider } from '@/provider/modal-provider';
+import { ModalProvider } from '@/providers/modal-provider';
+import { ToastProvider } from '@/providers/toast.provider';
 
 
 const geistSans = localFont({
@@ -40,6 +41,7 @@ export default function RootLayout({
        <ClerkProvider>
       <html lang="en">
         <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+          <ToastProvider />
           <ModalProvider />
           <header className="flex justify-end items-center p-4 gap-6 h-16  bg-white/10 backdrop-blur-md">
             <SignedOut>
@@ -53,6 +55,7 @@ export default function RootLayout({
             <SignedIn>
               <UserButton />
             </SignedIn>
+            
           </header>
           {children}
         </body>

@@ -13,6 +13,9 @@ RUN npm install
 # Salin semua file proyek ke dalam container
 COPY . .
 
+# Generate Prisma client
+RUN npx prisma generate
+
 # Buka port (Next.js default di 3000)
 EXPOSE 3000
 
