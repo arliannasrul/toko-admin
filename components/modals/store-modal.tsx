@@ -3,12 +3,12 @@
 import * as z from "zod"
 
 import { useStoreModal } from "@/hooks/use-store-modal"
-import Modal from "../modal"
+import Modal from "../ui/modal"
 import { useForm } from "react-hook-form"
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "../form"
-import { Input } from "../input"
-import { Button } from "../button"
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "../ui/form"
+import { Input } from "../ui/input"
+import { Button } from "../ui/button"
 import { useState } from "react"
 import axios from "axios"
 import toast from "react-hot-toast"

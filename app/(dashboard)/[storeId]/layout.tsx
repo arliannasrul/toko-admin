@@ -1,6 +1,6 @@
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
-import db from "/lib/db";
+import db from "@/lib/db";
 
 export default async function DashboardLayout({
     children,
@@ -26,9 +26,10 @@ export default async function DashboardLayout({
 
     return (
         <>
-        Ini Navbar
+        <div className="p-4">
+
         {children}
-        
+        </div>
         </>
     )
 }

@@ -1,18 +1,12 @@
-import { type Metadata } from 'next'
-import {
-  ClerkProvider,
-  SignInButton,
-  SignUpButton,
-  SignedIn,
-  SignedOut,
-  UserButton,
-} from '@clerk/nextjs'
+// app/layout.tsx
 
+import { type Metadata } from 'next'
+import { ClerkProvider } from '@clerk/nextjs'
 import localFont from "next/font/local";
 import "./globals.css";
 import { ModalProvider } from '@/providers/modal-provider';
 import { ToastProvider } from '@/providers/toast.provider';
-
+import  Navbar  from '@/components/navbar'; // Pastikan path ini benar
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -35,29 +29,17 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-
-
   return (
-       <ClerkProvider>
+    <ClerkProvider>
       <html lang="en">
         <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
           <ToastProvider />
           <ModalProvider />
-          <header className="flex justify-end items-center p-4 gap-6 h-16  bg-white/10 backdrop-blur-md">
-            <SignedOut>
-              <div className='hover:text-[#08a4a7]'>
-              <SignInButton />
-              </div>
-              <div className='hover:text-[#08a4a7]'>
-              <SignUpButton />
-              </div>
-            </SignedOut>
-            <SignedIn>
-              <UserButton />
-            </SignedIn>
-            
-          </header>
-          {children}
+          {/* Header sekarang sepenuhnya dikontrol oleh komponen Navbar */}
+          <Navbar />
+          <main className=''>
+            {children}
+          </main>
         </body>
       </html>
     </ClerkProvider>
