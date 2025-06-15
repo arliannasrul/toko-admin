@@ -6,6 +6,7 @@ import {
   SignedIn,
   SignedOut,
   UserButton,
+  
 } from '@clerk/nextjs';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
@@ -53,7 +54,7 @@ const Navbar = async () => {
           </div>
         </SignedOut>
         <SignedIn>
-          <UserButton afterSignOutUrl="/" />
+          <UserButton />
         </SignedIn>
       </div>
 

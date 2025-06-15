@@ -6,7 +6,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import { ModalProvider } from '@/providers/modal-provider';
 import { ToastProvider } from '@/providers/toast.provider';
-import  Navbar  from '@/components/navbar'; // Pastikan path ini benar
+
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -30,13 +30,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ClerkProvider>
+    <ClerkProvider afterSignOutUrl="/">
       <html lang="en">
         <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
           <ToastProvider />
           <ModalProvider />
-          {/* Header sekarang sepenuhnya dikontrol oleh komponen Navbar */}
-          <Navbar />
+        
           <main className=''>
             {children}
           </main>
