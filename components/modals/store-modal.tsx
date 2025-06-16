@@ -12,6 +12,7 @@ import { Button } from "../ui/button"
 import { useState } from "react"
 import axios from "axios"
 import toast from "react-hot-toast"
+import { useRouter } from "next/navigation"; // ✅ Tambahkan ini
 
 const formSchema = z.object({
     name : z.string().min(1),
@@ -19,7 +20,7 @@ const formSchema = z.object({
 
 
 export const StoreModal = () => {
-
+      const router = useRouter(); // ✅ Tambahkan ini
     const [loading, setLoading] = useState(false);
     const StoreModal = useStoreModal();
 
@@ -37,6 +38,8 @@ export const StoreModal = () => {
 
         console.log(response.data);
         toast.success("Toko berhasil dibuat")
+         router.push(`/${response.data.id}`); // ✅ Redirect ke toko
+         StoreModal.onClose(); // <-- Tambahkan ini untuk menutup modal
     } catch (error) {
         toast.error("Gagal Membuat Toko")
     } finally {
