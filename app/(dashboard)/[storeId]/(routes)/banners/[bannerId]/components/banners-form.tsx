@@ -64,6 +64,7 @@ export const BannersForm: React.FC<BannersFormProps> = ({initialData}) => {
          }
          
          router.refresh()
+         router.push(`/${params.storeId}/banners`)
             toast.success(toastMassage)
        } catch (error) {
         toast.error ("recheck your input")
