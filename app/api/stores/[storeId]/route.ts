@@ -22,7 +22,7 @@ export async function PATCH(req: Request, { params }: { params: { storeId: strin
             data: { name },
         });
 
-        return new NextResponse(JSON.stringify(store), { status: 200 });
+        return  NextResponse.json(store, { status: 200 });
     } catch (error) {
         console.error("[STORE_PATCH]", error);
         return new NextResponse("Internal error", { status: 500 });
@@ -45,7 +45,7 @@ export async function DELETE(req: Request, { params }: { params: { storeId: stri
            
         });
 
-        return new NextResponse(JSON.stringify(store), { status: 200 });
+        return NextResponse.json(store, { status: 200 });
     } catch (error) {
         console.error("[STORE_DELETE]", error);
         return new NextResponse("Internal error", { status: 500 });

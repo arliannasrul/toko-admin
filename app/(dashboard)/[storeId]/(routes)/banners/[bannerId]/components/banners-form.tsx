@@ -17,6 +17,7 @@ import { useParams, useRouter } from 'next/navigation';
 import  {AlertModal}  from '@/components/modals/alert-modal';
 import { ApiAlert } from '@/components/ui/api-alert';
 import { useOrigin } from '@/hooks/use-origin';
+import ImageUpload from '@/components/ui/image-upload';
 
 interface BannersFormProps {
     initialData: Banner | null;
@@ -54,9 +55,16 @@ export const BannersForm: React.FC<BannersFormProps> = ({initialData}) => {
     const onSubmit = async (data: BannersFormValues) => {
        try {
          setLoading(true)
-         await axios.patch(`/api/stores/${params.storeId}`, data)
+
+         if (initialData) {
+            await axios.patch(`/api/${params.storeId}/banners/${params.bannerId}`, data)
+         } else {
+            await axios.post(`/api/${params.storeId}/banners`, data)
+
+         }
+         
          router.refresh()
-            toast.success("Store updated successfully")
+            toast.success(toastMassage)
        } catch (error) {
         toast.error ("recheck your input")
         
@@ -68,10 +76,10 @@ export const BannersForm: React.FC<BannersFormProps> = ({initialData}) => {
     const onDelete = async () => {
         try {
             setLoading(true)
-            await axios.delete(`/api/stores/${params.storeId}`)
+            await axios.delete(`/api/stores/${params.storeId}/banners/${params.bannerId}`)
             router.refresh()
             router.push('/')
-            toast.success("Store was successfull deleted")
+            toast.success("Banner berhasil dihapus")
         } catch (error) {
             toast.error("something went wrong")
         } finally {
@@ -108,6 +116,16 @@ export const BannersForm: React.FC<BannersFormProps> = ({initialData}) => {
                             </FormItem>
                         ) }/>
 
+                        <FormField control={form.control} name="imageUrl" render={({field}) => (
+                            <FormItem>
+                                <FormLabel>Image</FormLabel>
+                                <FormControl>
+                                    <ImageUpload disabled={loading} onChange={(url) => field.onChange(url) } onRemove={() => field.onChange("")} value={field.value ? [field.value] : []}/>
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        ) }/>
+
                     </div>
                     <Button disabled={loading} className='ml-auto' type="submit">
                         {action}
@@ -115,6 +133,7 @@ export const BannersForm: React.FC<BannersFormProps> = ({initialData}) => {
                 </form>
             </Form>
             <Separator />
+           
             
         </>
     )
