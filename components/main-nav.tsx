@@ -21,6 +21,11 @@ export function MainNav({
             label: 'Banners',
             active: pathname === `/${params.storeId}/banners`,
         },
+               {
+            href: `/${params.storeId}/categories`,
+            label: 'Categories',
+            active: pathname === `/${params.storeId}/categories`,
+        },
         {
             href: `/${params.storeId}/settings`,
             label: 'Settings',

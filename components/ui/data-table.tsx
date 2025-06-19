@@ -20,6 +20,7 @@ import {
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
+  seacrhKey?: string
 }
 
 export function DataTable<TData, TValue>({
