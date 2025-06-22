@@ -9,7 +9,7 @@ interface ApiListProps {
     idIndikator: string;
 }
 
-export const ApiLlist: React.FC<ApiListProps>= ({
+export const ApiList: React.FC<ApiListProps>= ({
     namaIndikator,
     idIndikator
 }) => {
