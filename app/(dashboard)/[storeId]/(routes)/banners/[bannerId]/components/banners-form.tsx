@@ -79,7 +79,7 @@ export const BannersForm: React.FC<BannersFormProps> = ({initialData}) => {
             setLoading(true)
             await axios.delete(`/api/stores/${params.storeId}/banners/${params.bannerId}`)
             router.refresh()
-            router.push('/')
+            router.push(`/${params.storeId}/banners`)
             toast.success("Banner berhasil dihapus")
         } catch (error) {
             toast.error("something went wrong")
@@ -133,9 +133,7 @@ export const BannersForm: React.FC<BannersFormProps> = ({initialData}) => {
                     </Button>
                 </form>
             </Form>
-            <Separator />
-           
-            
+            <Separator />  
         </>
     )
 }
