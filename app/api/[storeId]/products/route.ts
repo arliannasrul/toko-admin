@@ -15,7 +15,7 @@ export async function POST(req: Request, { params }: { params: { storeId: string
         if (!name) {
             return new NextResponse("Name is required", { status: 400 });
         }
-         if (!images || !images.leght) {
+         if (!images || !images.length) {
             return new NextResponse("Images is required", { status: 400 });
         }
         if (!price) {
