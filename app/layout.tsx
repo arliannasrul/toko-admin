@@ -1,15 +1,12 @@
-import { type Metadata } from 'next'
-import {
-  ClerkProvider,
-  SignInButton,
-  SignUpButton,
-  SignedIn,
-  SignedOut,
-  UserButton,
-} from '@clerk/nextjs'
+// app/layout.tsx
 
+import { type Metadata } from 'next'
+import { ClerkProvider } from '@clerk/nextjs'
 import localFont from "next/font/local";
 import "./globals.css";
+import { ModalProvider } from '@/providers/modal-provider';
+import { ToastProvider } from '@/providers/toast.provider';
+
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -33,23 +30,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-       <ClerkProvider>
+    <ClerkProvider afterSignOutUrl="/">
       <html lang="en">
         <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-          <header className="flex justify-end items-center p-4 gap-6 h-16  bg-white/10 backdrop-blur-md">
-            <SignedOut>
-              <div className='hover:text-[#08a4a7]'>
-              <SignInButton />
-              </div>
-              <div className='hover:text-[#08a4a7]'>
-              <SignUpButton />
-              </div>
-            </SignedOut>
-            <SignedIn>
-              <UserButton />
-            </SignedIn>
-          </header>
-          {children}
+          <ToastProvider />
+          <ModalProvider />
+        
+          <main className=''>
+            {children}
+          </main>
         </body>
       </html>
     </ClerkProvider>
