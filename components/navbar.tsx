@@ -22,10 +22,11 @@ const Navbar = async () => {
     redirect('/sign-in');
   }
 
-  const stores = await db.store.findMany()
+  const stores = await db.store.findMany({
     where: {
-      userId
-    }
+      userId,
+    },
+  });
   return (
     <header className="flex items-center justify-between p-4 h-16 border-b bg-white/10 backdrop-blur-md sticky top-0 z-50">
       
