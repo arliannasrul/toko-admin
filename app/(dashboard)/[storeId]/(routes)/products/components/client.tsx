@@ -27,7 +27,7 @@ export const ProductClient: React.FC<ProductClientProps> = ({data}) => {
             </div>
             <Separator />
             <div className="p-12">
-            <DataTable data={data} columns={columns} seacrhKey="name" />
+            <DataTable  data={data} columns={columns} searchKey="name" />
             </div>
             <Heading 
             title= "API"
