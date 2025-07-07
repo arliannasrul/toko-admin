@@ -1,6 +1,6 @@
 "use client"
 
-import { Banner } from "@/app/generated/prisma"
+
 import { Button } from "@/components/ui/button"
 import { Heading } from "@/components/ui/heading"
 import { Separator } from "@/components/ui/separator"
