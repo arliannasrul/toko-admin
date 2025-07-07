@@ -1,4 +1,4 @@
-'use client'
+"use client"
 import { Store } from '@/app/generated/prisma';
 import { Popover, PopoverContent, PopoverTrigger } from './ui/popover';
 import { useStoreModal } from '@/hooks/use-store-modal';

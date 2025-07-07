@@ -1,4 +1,4 @@
-'use client';
+"use client"
 import * as z from 'zod';
 
 import { Category, Image, Product  } from "@/app/generated/prisma";

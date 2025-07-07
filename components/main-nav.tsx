@@ -1,9 +1,9 @@
-'use client'
+"use client"
 import { cn } from '@/lib/utils'
-import { PathParamsContext } from 'next/dist/shared/lib/hooks-client-context.shared-runtime'
+
 import Link from 'next/link'
 import { useParams, usePathname } from 'next/navigation'
-import path from 'path'
+
 export function MainNav({
     className,
     ...props
