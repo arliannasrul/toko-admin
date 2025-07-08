@@ -2,7 +2,7 @@
 import db from "@/lib/db"; ///(routes)/page.tsx]
 import { Heading } from "@/components/ui/heading"; //
 import { Separator } from "@/components/ui/separator"; //
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"; // Anda mungkin perlu membuat komponen Card jika belum ada
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"; 
 import { DollarSign, Package, Blocks, Image } from "lucide-react"; // Contoh ikon
 
 interface DashboardPageProps {
