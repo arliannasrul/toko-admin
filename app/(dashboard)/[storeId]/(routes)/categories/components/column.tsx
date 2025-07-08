@@ -17,7 +17,7 @@ export const columns: ColumnDef<CategoryColumn>[] = [
     header: "Name",
   },
   {
-    accessorKey: "banner",
+    accessorKey: "bannerLabel", // ✅ sesuai struktur data
     header: "Banner",
   },
   {
