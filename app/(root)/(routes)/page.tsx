@@ -1,5 +1,6 @@
 
 export default function Home() {
+  console.log("Rendered Home Page");
   return (
     <>
       <div>
