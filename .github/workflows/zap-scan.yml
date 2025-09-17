@@ -21,22 +21,14 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      # 🔹 Build dulu biar bisa pakai "npm run start"
-      - name: Build app
-        run: npm run build
+      # 🔹 Jalankan dev server (Next.js default di port 3000)
+      - name: Start app (dev mode)
+        run: npm run dev &
         env:
-            NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: "dummy_key"
-            CLERK_SECRET_KEY: "dummy_secret"
+          NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: "test"
+          CLERK_SECRET_KEY: "test"
 
-      # 🔹 Start Next.js server (production mode di port 3000)
-      - name: Start app
-        run: npm run start &
-        env:
-            NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: "dummy_key"
-            CLERK_SECRET_KEY: "dummy_secret"
-        
-
-      # 🔹 Tunggu sampai server siap
+      # 🔹 Tunggu sampai server benar-benar hidup
       - name: Wait for app
         run: |
           for i in {1..30}; do
@@ -56,7 +48,7 @@ jobs:
           fail_action: false
           cmd_options: '-a -r zap_report.html -J zap_report.json'
 
-      # 🔹 Upload hasil scan
+      # 🔹 Upload report biar bisa dicek
       - name: Upload ZAP report
         uses: actions/upload-artifact@v4
         with:
