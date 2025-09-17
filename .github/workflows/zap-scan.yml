@@ -24,10 +24,17 @@ jobs:
       # 🔹 Build dulu biar bisa pakai "npm run start"
       - name: Build app
         run: npm run build
+        env:
+            NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: "dummy_key"
+            CLERK_SECRET_KEY: "dummy_secret"
 
       # 🔹 Start Next.js server (production mode di port 3000)
       - name: Start app
         run: npm run start &
+        env:
+            NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: "dummy_key"
+            CLERK_SECRET_KEY: "dummy_secret"
+        
 
       # 🔹 Tunggu sampai server siap
       - name: Wait for app
