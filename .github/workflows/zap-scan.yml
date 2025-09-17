@@ -1,7 +1,7 @@
 name: "OWASP ZAP Scan"
 
 on:
-  workflow_dispatch:   # bisa dijalankan manual
+  workflow_dispatch:
   push:
     branches: [ "main" ]
 
@@ -13,11 +13,23 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      # 🔹 Mulai server kamu (sesuaikan dengan projectmu)
-      - name: Start app
-        run: npm install && npm run start &
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
 
-      # 🔹 Tunggu server sampai bener-bener jalan
+      - name: Install dependencies
+        run: npm install
+
+      # 🔹 Build dulu biar bisa pakai "npm run start"
+      - name: Build app
+        run: npm run build
+
+      # 🔹 Start Next.js server (production mode di port 3000)
+      - name: Start app
+        run: npm run start &
+
+      # 🔹 Tunggu sampai server siap
       - name: Wait for app
         run: |
           for i in {1..30}; do
@@ -29,7 +41,7 @@ jobs:
             sleep 5
           done
 
-      # 🔹 Baru jalankan ZAP scan
+      # 🔹 Jalankan ZAP scan
       - name: Run ZAP Baseline Scan
         uses: zaproxy/action-baseline@v0.10.0
         with:
@@ -37,7 +49,7 @@ jobs:
           fail_action: false
           cmd_options: '-a -r zap_report.html -J zap_report.json'
 
-      # 🔹 Upload laporan biar bisa kamu lihat/download
+      # 🔹 Upload hasil scan
       - name: Upload ZAP report
         uses: actions/upload-artifact@v4
         with:
