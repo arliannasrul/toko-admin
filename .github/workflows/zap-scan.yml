@@ -1,39 +1,45 @@
 name: "OWASP ZAP Scan"
 
 on:
-  workflow_dispatch:  # bisa dijalankan manual
-  schedule:
-    - cron: '0 0 * * 0' # tiap Minggu
+  workflow_dispatch:   # bisa dijalankan manual
+  push:
+    branches: [ "main" ]
 
 jobs:
   zap_scan:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      # Jalankan aplikasi dulu (contoh Node.js)
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 18
-      - run: npm install && npm run start &
+      # 🔹 Mulai server kamu (sesuaikan dengan projectmu)
+      - name: Start app
+        run: npm install && npm run start &
 
-      # Tunggu server ready (sesuaikan port)
+      # 🔹 Tunggu server sampai bener-bener jalan
       - name: Wait for app
         run: |
           for i in {1..30}; do
             if curl -s http://localhost:3000 > /dev/null; then
-              echo "App is up!"
+              echo "✅ App is up!"
               break
             fi
-            echo "Waiting..."
+            echo "⏳ Waiting..."
             sleep 5
           done
 
-      # Jalankan ZAP baseline scan
+      # 🔹 Baru jalankan ZAP scan
       - name: Run ZAP Baseline Scan
         uses: zaproxy/action-baseline@v0.10.0
         with:
           target: 'http://localhost:3000'
           fail_action: false
+          cmd_options: '-a -r zap_report.html -J zap_report.json'
+
+      # 🔹 Upload laporan biar bisa kamu lihat/download
+      - name: Upload ZAP report
+        uses: actions/upload-artifact@v4
+        with:
+          name: zap-report
+          path: zap_report.html
