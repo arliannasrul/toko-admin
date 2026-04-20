@@ -87,6 +87,7 @@ export const PremiumHero = ({ data }: PremiumHeroProps) => {
               <div className="flex -space-x-3">
                 {[1, 2, 3].map((i) => (
                   <div key={i} className="h-10 w-10 rounded-full border-2 border-slate-950 bg-slate-800 flex items-center justify-center overflow-hidden">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img src={`https://i.pravatar.cc/100?img=${i + 10}`} alt="user" />
                   </div>
                 ))}
