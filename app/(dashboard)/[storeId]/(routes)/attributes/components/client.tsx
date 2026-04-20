@@ -33,7 +33,7 @@ export const AttributeClient: React.FC<AttributeClientProps> = ({
       <DataTable searchKey="name" columns={columns} data={data} />
       <Heading title="API" description="API Calls for Attributes" />
       <Separator />
-      <ApiList entityName="attributes" entityIdName="attributeId" />
+      <ApiList namaIndikator="attributes" idIndikator="attributeId" />
     </>
   );
 };
