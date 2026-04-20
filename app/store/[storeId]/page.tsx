@@ -58,7 +58,7 @@ const StorePage = async ({ params }: StorePageProps) => {
   const allProducts = store.product;
 
   return (
-    <div className="min-h-screen bg-[#FAFAFA] text-slate-900">
+    <div className="min-h-screen bg-[#FAFAFA] dark:bg-slate-950 text-slate-900 dark:text-white transition-colors duration-300">
       <MarketNavbar />
       
       <main className="pt-24 pb-20 space-y-24">
@@ -67,9 +67,9 @@ const StorePage = async ({ params }: StorePageProps) => {
         <div className="space-y-6 sm:space-y-8">
           {/* Store Identity */}
           <Container>
-              <div className="mx-4 sm:mx-6 lg:mx-8 flex items-center gap-x-4 bg-white p-4 sm:p-6 rounded-3xl border border-slate-100 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)]">
+              <div className="mx-4 sm:mx-6 lg:mx-8 flex items-center gap-x-4 bg-white dark:bg-slate-900 p-4 sm:p-6 rounded-3xl border border-slate-100 dark:border-slate-800 shadow-sm">
                   {store.logoUrl ? (
-                      <div className="relative h-16 w-16 sm:h-20 sm:w-20 rounded-2xl overflow-hidden border border-slate-100 flex-shrink-0 bg-white">
+                      <div className="relative h-16 w-16 sm:h-20 sm:w-20 rounded-2xl overflow-hidden border border-slate-100 dark:border-slate-800 flex-shrink-0 bg-white dark:bg-slate-950">
                           <Image src={store.logoUrl} alt={store.name} fill className="object-contain p-2" />
                       </div>
                   ) : (
@@ -80,7 +80,7 @@ const StorePage = async ({ params }: StorePageProps) => {
                       </div>
                   )}
                   <div>
-                      <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-slate-900">{store.name}</h1>
+                      <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-slate-900 dark:text-white">{store.name}</h1>
                       <div className="flex items-center gap-x-2 mt-1">
                           <span className="inline-flex items-center rounded-full bg-sky-50 px-2.5 py-0.5 text-xs font-semibold text-sky-600">
                               Official Store
@@ -128,12 +128,12 @@ const StorePage = async ({ params }: StorePageProps) => {
                                 <Link 
                                     key={cat.id} 
                                     href={`/store/${params.storeId}?categoryId=${cat.id}`}
-                                    className="group relative h-40 rounded-3xl bg-white border border-slate-100 p-6 flex flex-col justify-between hover:border-sky-200 hover:shadow-xl hover:shadow-sky-500/5 transition-all duration-500 overflow-hidden"
+                                    className="group relative h-40 rounded-3xl bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 p-6 flex flex-col justify-between hover:border-sky-200 dark:hover:border-sky-500/50 hover:shadow-xl hover:shadow-sky-500/5 transition-all duration-500 overflow-hidden"
                                 >
-                                    <div className="h-12 w-12 rounded-2xl bg-slate-50 group-hover:bg-sky-50 flex items-center justify-center transition-colors">
-                                        <Sparkles className="h-6 w-6 text-slate-400 group-hover:text-sky-600 transition-colors" />
+                                    <div className="h-12 w-12 rounded-2xl bg-slate-50 dark:bg-slate-800 group-hover:bg-sky-50 dark:group-hover:bg-sky-500/10 flex items-center justify-center transition-colors">
+                                        <Sparkles className="h-6 w-6 text-slate-400 dark:text-slate-500 group-hover:text-sky-600 transition-colors" />
                                     </div>
-                                    <span className="font-bold text-slate-900 leading-tight">{cat.name}</span>
+                                    <span className="font-bold text-slate-900 dark:text-slate-100 leading-tight">{cat.name}</span>
                                     <div className="absolute top-0 right-0 p-4 opacity-0 group-hover:opacity-100 transition-opacity">
                                         <TrendingUp className="h-4 w-4 text-sky-600" />
                                     </div>
@@ -168,11 +168,11 @@ const StorePage = async ({ params }: StorePageProps) => {
                     </div>
 
                     {allProducts.length === 0 ? (
-                        <div className="flex flex-col items-center justify-center py-20 bg-white rounded-[3rem] border border-dashed border-slate-200">
-                            <div className="h-20 w-20 bg-slate-50 rounded-full flex items-center justify-center mb-6">
-                                <ShoppingBag className="h-10 w-10 text-slate-200" />
+                        <div className="flex flex-col items-center justify-center py-20 bg-white dark:bg-slate-900 rounded-[3rem] border border-dashed border-slate-200 dark:border-slate-800">
+                            <div className="h-20 w-20 bg-slate-50 dark:bg-slate-800 rounded-full flex items-center justify-center mb-6">
+                                <ShoppingBag className="h-10 w-10 text-slate-200 dark:text-slate-600" />
                             </div>
-                            <p className="text-slate-400 font-medium whitespace-pre-wrap text-center">
+                            <p className="text-slate-400 dark:text-slate-500 font-medium whitespace-pre-wrap text-center">
                                 Belum ada produk tersedia.{"\n"}Silakan cek kembali nanti.
                             </p>
                         </div>
@@ -211,18 +211,18 @@ const StorePage = async ({ params }: StorePageProps) => {
         </Container>
       </main>
 
-      <footer className="border-t border-slate-200 py-12">
+      <footer className="border-t border-slate-200 dark:border-slate-800 py-12 transition-colors">
         <Container>
             <div className="px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-6">
                 <div className="flex items-center gap-x-2">
-                    <div className="h-8 w-8 bg-slate-950 rounded-xl flex items-center justify-center">
-                        <span className="text-white text-lg font-black italic">M</span>
+                    <div className="h-8 w-8 bg-slate-950 dark:bg-slate-100 rounded-xl flex items-center justify-center transition-colors">
+                        <span className="text-white dark:text-slate-950 text-lg font-black italic">M</span>
                     </div>
-                    <span className="text-xl font-black tracking-tight text-slate-950">
+                    <span className="text-xl font-black tracking-tight text-slate-950 dark:text-white transition-colors">
                         MitraSpace<span className="text-sky-600">.</span>
                     </span>
                 </div>
-                <p className="text-sm text-slate-500 font-medium">
+                <p className="text-sm text-slate-500 dark:text-slate-400 font-medium transition-colors">
                     &copy; 2026 MitraSpace. Member of Premium Group.
                 </p>
             </div>

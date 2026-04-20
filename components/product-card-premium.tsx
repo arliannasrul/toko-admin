@@ -29,9 +29,9 @@ export const ProductCardPremium = ({ item, storeId }: ProductCardPremiumProps) =
       className="group relative"
     >
       <Link href={`/store/${storeId}/product/${item.id}`}>
-        <div className="bg-white rounded-[2.5rem] p-4 transition-all duration-500 hover:shadow-[0_20px_50px_rgba(0,0,0,0.05)] border border-slate-100 hover:border-sky-100 relative mb-4">
+        <div className="bg-white dark:bg-slate-900 rounded-[2.5rem] p-4 transition-all duration-500 hover:shadow-[0_20px_50px_rgba(0,0,0,0.05)] border border-slate-100 dark:border-slate-800 hover:border-sky-100 dark:hover:border-sky-800 relative mb-4">
           {/* Image Container */}
-          <div className="aspect-square rounded-[2rem] bg-slate-50 relative overflow-hidden">
+          <div className="aspect-square rounded-[2rem] bg-slate-50 dark:bg-slate-800 relative overflow-hidden">
             {displayImage ? (
               <Image
                 src={displayImage}
@@ -57,21 +57,21 @@ export const ProductCardPremium = ({ item, storeId }: ProductCardPremiumProps) =
 
             {/* Category Tag */}
             <div className="absolute top-4 left-4">
-                <span className="px-3 py-1 text-[10px] font-bold uppercase tracking-widest bg-white/70 backdrop-blur-md rounded-full border border-white/20 text-slate-900">
+                <span className="px-3 py-1 text-[10px] font-bold uppercase tracking-widest bg-white/70 dark:bg-slate-900/70 backdrop-blur-md rounded-full border border-white/20 dark:border-slate-800/50 text-slate-900 dark:text-white">
                     {item.category?.name}
                 </span>
             </div>
           </div>
 
           <div className="mt-6 px-2 space-y-2">
-            <h3 className="text-lg font-bold text-slate-900 line-clamp-1 group-hover:text-sky-600 transition-colors">
+            <h3 className="text-lg font-bold text-slate-900 dark:text-white line-clamp-1 group-hover:text-sky-600 transition-colors">
               {item.name}
             </h3>
             
             <div className="flex items-center justify-between pt-2">
               <div className="flex flex-col">
                 <span className="text-[10px] text-slate-400 font-medium uppercase tracking-tighter">Mulai dari</span>
-                <span className="text-xl font-black text-slate-950">
+                <span className="text-xl font-black text-slate-950 dark:text-white">
                   {displayVariant ? (
                     `Rp ${new Intl.NumberFormat("id-ID").format(Number(displayVariant.price))}`
                   ) : (
@@ -79,7 +79,7 @@ export const ProductCardPremium = ({ item, storeId }: ProductCardPremiumProps) =
                   )}
                 </span>
               </div>
-              <div className="h-10 w-10 flex items-center justify-center rounded-2xl bg-slate-50 group-hover:bg-sky-50 transition-colors">
+              <div className="h-10 w-10 flex items-center justify-center rounded-2xl bg-slate-50 dark:bg-slate-800 group-hover:bg-sky-50 dark:group-hover:bg-sky-500/20 transition-colors">
                 <ArrowRightAlt className="h-5 w-5 text-slate-400 group-hover:text-sky-600 group-hover:translate-x-1 transition-all" />
               </div>
             </div>
