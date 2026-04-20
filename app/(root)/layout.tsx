@@ -1,4 +1,4 @@
-import { auth } from "@clerk/nextjs/server";
+import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import db from "@/lib/db"
 
@@ -7,21 +7,13 @@ export default async function setupLayout ({
 }: {
     children: React.ReactNode;
 }) {
-    const {userId} = await auth()
+    const session = await auth();
+    const userId = session?.user?.id;
+
     if (!userId) {
-        redirect("sign-in")
+        redirect("/login")
     }
 
-    const store = await db.store.findFirst({
-        where: {
-            userId
-        }
-    })
-
-    if (store) {
-        redirect(`/${store.id}`)
-       
-    }
     return (
         <>
         {children}

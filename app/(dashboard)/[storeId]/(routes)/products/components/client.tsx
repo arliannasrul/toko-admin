@@ -9,7 +9,10 @@ import { useParams, useRouter, useSearchParams } from "next/navigation" // Modif
 import { ProductColumn, columns } from "./column" ///(routes)/products/components/column.ts]
 import { DataTable } from "@/components/ui/data-table" //
 import { ApiList } from "@/components/ui/api-list" //
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select" // Modifikasi di sini: Tambah import Select components
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select" 
+import { Package } from "lucide-react"
+
+import { EmptyState } from "@/components/ui/empty-state"
 
 interface ProductClientProps {
     data: ProductColumn[]
@@ -76,7 +79,17 @@ export const ProductClient: React.FC<ProductClientProps> = ({data}) => {
                         </SelectContent>
                     </Select>
                 </div>
-                <DataTable  data={data} columns={columns} searchKey="name" /> {/* */}
+                {data.length === 0 ? (
+                    <EmptyState 
+                        title="Belum ada Produk" 
+                        description="Mulai tambahkan produk pertama Anda untuk mulai berjualan." 
+                        icon={Package}
+                        actionLabel="Tambah Produk"
+                        actionPath={`/${params.storeId}/products/new`}
+                    />
+                ) : (
+                    <DataTable  data={data} columns={columns} searchKey="name" />
+                )}
             </div>
             <Heading
             title= "API"

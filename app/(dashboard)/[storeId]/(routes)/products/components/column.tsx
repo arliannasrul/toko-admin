@@ -2,14 +2,14 @@
 "use client"
 
 import { ColumnDef } from "@tanstack/react-table"
-import { CellAction } from "./cell-action" ///(routes)/products/components/cell-action.tsx]
+import { CellAction } from "./cell-action"
 
-// This type is used to define the shape of our data.
-// You can use a Zod schema here if you want.
 export type ProductColumn = {
   id: string
   name: string
-  price: string
+  priceRange: string
+  totalStock: number
+  variantCount: number
   category: string
   isFeatured: boolean
   isArchived: boolean
@@ -22,22 +22,30 @@ export const columns: ColumnDef<ProductColumn>[] = [
     header: "Name",
   },
   {
-    accessorKey: "isArchived",
-    header: "Archived",
-    cell: ({ row }) => (row.original.isArchived ? "Yes" : "No"), // Modifikasi di sini
+    accessorKey: "priceRange",
+    header: "Price Range",
   },
   {
-    accessorKey: "isFeatured",
-    header: "Featured",
-    cell: ({ row }) => (row.original.isFeatured ? "Yes" : "No"), // Tambahkan juga untuk isFeatured agar konsisten
+    accessorKey: "variantCount",
+    header: "Variants",
   },
-   {
-    accessorKey: "price",
-    header: "Price",
+  {
+    accessorKey: "totalStock",
+    header: "Total Stock",
   },
   {
     accessorKey: "category",
     header: "Category",
+  },
+  {
+    accessorKey: "isFeatured",
+    header: "Featured",
+    cell: ({ row }) => (row.original.isFeatured ? "Yes" : "No"),
+  },
+  {
+    accessorKey: "isArchived",
+    header: "Archived",
+    cell: ({ row }) => (row.original.isArchived ? "Yes" : "No"),
   },
   {
     accessorKey: "createdAt",
@@ -45,6 +53,6 @@ export const columns: ColumnDef<ProductColumn>[] = [
   },
   {
     id: "action",
-    cell: ({row}) => <CellAction data={row.original}/> ///(routes)/products/components/cell-action.tsx]
+    cell: ({row}) => <CellAction data={row.original}/>
   }
 ]

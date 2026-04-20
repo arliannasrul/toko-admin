@@ -8,6 +8,8 @@ import { useParams, useRouter } from "next/navigation"
 import { CategoryColumn, columns } from "./column"
 import { DataTable } from "@/components/ui/data-table"
 import { ApiList } from "@/components/ui/api-list"
+import { EmptyState } from "@/components/ui/empty-state"
+import { Blocks } from "lucide-react"
 
 interface CategoryClientProps {
     data: CategoryColumn[]
@@ -26,11 +28,23 @@ export const CategoryClient: React.FC<CategoryClientProps> = ({data}) => {
                 </Button>
             </div>
             <Separator />
-            <DataTable<CategoryColumn, unknown>
-  columns={columns}
-  data={data}
-  searchKey="name"
-/>
+            <div className="py-4">
+                {data.length === 0 ? (
+                    <EmptyState 
+                        title="Belum ada Kategori" 
+                        description="Mulai tambahkan kategori produk Anda." 
+                        icon={Blocks}
+                        actionLabel="Tambah Kategori"
+                        actionPath={`/${params.storeId}/categories/new`}
+                    />
+                ) : (
+                    <DataTable<CategoryColumn, unknown>
+                        columns={columns}
+                        data={data}
+                        searchKey="name"
+                    />
+                )}
+            </div>
 
             <Heading
             title="API"

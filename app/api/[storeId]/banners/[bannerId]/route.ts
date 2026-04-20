@@ -1,5 +1,5 @@
 import  db  from "@/lib/db";
-import { auth } from "@clerk/nextjs/server";
+import { auth } from "@/auth";
 import { NextResponse } from "next/server";
 
 export async function GET(req: Request, { params }: { params: {  bannerId: string } }) {
@@ -26,12 +26,13 @@ export async function GET(req: Request, { params }: { params: {  bannerId: strin
 
 export async function PATCH(req: Request, { params }: { params: { storeId: string, bannerId: string} }) {
     try {
-        const { userId } = await auth();
+        const session = await auth();
+        const userId = session?.user?.id;
         const  body = await req.json();
         const { label, imageUrl} = body;
 
         if (!userId) {
-            return new NextResponse("Unauthenticated", { status: 401 })
+            return new NextResponse("Unauthenticated", { status: 403 })
         }
         if (!label) {
             return new NextResponse("Banner label is required", { status: 400 });
@@ -67,7 +68,8 @@ export async function PATCH(req: Request, { params }: { params: { storeId: strin
 
 export async function DELETE(req: Request, { params }: { params: { storeId: string, bannerId: string } }) {
     try {
-        const { userId } = await auth();
+        const session = await auth();
+        const userId = session?.user?.id;
 
         if (!userId) {
             return new NextResponse("Unauthenticated", { status: 401 })

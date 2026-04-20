@@ -1,4 +1,4 @@
-import { auth } from "@clerk/nextjs/server";
+import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import db from "@/lib/db";
 import { SettingsForm } from "./components/settings-form";
@@ -10,10 +10,11 @@ interface SettingsPageProps {
 const SettingsPage: React.FC<SettingsPageProps> = async ({
     params
 }) =>  {
-    const { userId } = await auth()
+    const session = await auth();
+    const userId = session?.user?.id;
 
     if (!userId) {
-        redirect('/sign-in');
+        redirect('/login');
     }
 
     const store = await db.store.findFirst({

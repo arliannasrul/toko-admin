@@ -1,62 +1,57 @@
-
-
-import {
-  SignInButton,
-  SignUpButton,
-  SignedIn,
-  SignedOut,
-  UserButton,
-  
-} from '@clerk/nextjs';
 import Link from 'next/link';
-import { cn } from '@/lib/utils';
 import { MainNav } from './main-nav';
-import  StoreSwitcher  from './store-switcher';
-import { auth } from '@clerk/nextjs/server';
+import StoreSwitcher from './store-switcher';
+import { auth } from '@/auth';
 import { redirect } from 'next/navigation';
 import db from '@/lib/db';
+import { ThemeToggle } from './theme-toggle';
+import Image from 'next/image';
+import { UserNav } from './user-nav';
 
-const Navbar = async () => {
-  const { userId } = await auth();
+interface NavbarProps {
+  currentStoreId?: string;
+}
+
+const Navbar = async ({ currentStoreId }: NavbarProps) => {
+  const session = await auth();
+  const userId = session?.user?.id;
+
   if (!userId) {
-    redirect('/sign-in');
+    redirect('/login');
   }
 
   const stores = await db.store.findMany({
     where: {
       userId,
-    },
+    } as any, // Cast as any because Prisma types might be syncing
   });
+
   return (
     <header className="flex items-center justify-between p-4 h-16 border-b bg-white/10 backdrop-blur-md sticky top-0 z-50">
       
       {/* Bagian Kiri: Logo atau Nama Brand */}
       <div>
-        <Link href="/" className="text-xl font-bold hover:text-gray-700">
-          Tokomu
+        <Link href="/" className="flex items-center gap-x-2 text-xl font-bold hover:text-gray-700">
+          {stores.find(s => s.id === currentStoreId)?.logoUrl ? (
+             <div className="relative h-14 w-52">
+               <Image fill src={stores.find(s => s.id === currentStoreId)?.logoUrl!} alt="Logo" className="object-contain object-left" />
+             </div>
+          ) : (
+            "Tokomu"
+          )}
         </Link>
       </div>
 
-      {/* Bagian Tengah: Link Navigasi Utama (Hanya muncul saat login) */}
-      <SignedIn> {/* <-- CUKUP TAMBAHKAN INI */}
+      {/* Bagian Tengah: Link Navigasi Utama */}
+      <div className="flex items-center space-x-4">
         <StoreSwitcher items={stores} />
         <MainNav className='mx-6'/>
-      </SignedIn> {/* <-- DAN PENUTUPNYA DI SINI */}
+      </div>
 
-
-      {/* Bagian Kanan: Tombol Autentikasi dan User */}
+      {/* Bagian Kanan: User & Settings */}
       <div className="flex items-center gap-4">
-        <SignedOut>
-          <div className='hover:text-[#08a4a7] text-sm font-medium'>
-            <SignInButton mode="modal" />
-          </div>
-          <div className='hover:text-[#08a4a7] text-sm font-medium'>
-            <SignUpButton mode="modal" />
-          </div>
-        </SignedOut>
-        <SignedIn>
-          <UserButton />
-        </SignedIn>
+        <ThemeToggle />
+        <UserNav />
       </div>
 
     </header>

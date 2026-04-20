@@ -1,4 +1,4 @@
-import { auth } from "@clerk/nextjs/server";
+import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import db from "@/lib/db";
 import Navbar from "@/components/navbar";
@@ -10,9 +10,11 @@ export default async function DashboardLayout({
   children: React.ReactNode;
   params: { storeId: string };
 }) {
-  const { userId } = await auth();
+  const session = await auth();
+  const userId = session?.user?.id;
+
   if (!userId) {
-    redirect("sign-in");
+    redirect("/login");
   }
 
   const store = await db.store.findFirst({
@@ -29,7 +31,7 @@ export default async function DashboardLayout({
   return (
     <>
       <div className="">
-        <Navbar />
+        <Navbar currentStoreId={params.storeId} />
         {children}
       </div>
     </>

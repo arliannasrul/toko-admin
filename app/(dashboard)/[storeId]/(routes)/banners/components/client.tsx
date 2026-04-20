@@ -9,6 +9,8 @@ import { useParams, useRouter } from "next/navigation"
 import { BannerColumn, columns } from "./column"
 import { DataTable } from "@/components/ui/data-table"
 import { ApiList } from "@/components/ui/api-list"
+import { EmptyState } from "@/components/ui/empty-state"
+import { Image } from "lucide-react"
 
 interface BannerClientProps {
     data: BannerColumn[]
@@ -28,7 +30,17 @@ export const BannerClient: React.FC<BannerClientProps> = ({data}) => {
             </div>
             <Separator />
             <div className="p-12">
-            <DataTable data={data} columns={columns } searchKey="label" />
+                {data.length === 0 ? (
+                    <EmptyState 
+                        title="Belum ada Banner" 
+                        description="Mulai tambahkan banner untuk mempercantik tampilan toko Anda." 
+                        icon={Image}
+                        actionLabel="Tambah Banner"
+                        actionPath={`/${params.storeId}/banners/new`}
+                    />
+                ) : (
+                    <DataTable data={data} columns={columns } searchKey="label" />
+                )}
             </div>
             <Heading title="API" description="API untuk Banners"/>
             <Separator />

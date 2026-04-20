@@ -8,23 +8,36 @@ const ProductPage = async({
 }) => {
     const product = await db.product.findUnique({
         where: {id: params.productId},
-        include: {images: true,}
+        include: {
+            variants: {
+                include: {
+                    images: true,
+                    attributeValues: true
+                }
+            }
+        }
     })
 
     const categories = await db.category.findMany({
-        where: {
-            storeId: params.storeId
+        where: { storeId: params.storeId }
+    })
+
+    const attributes = await db.attribute.findMany({
+        where: { storeId: params.storeId },
+        include: {
+            values: true
         }
     })
 
     return ( 
         <div className="flex-col">
             <div className="flex-1 space-y-4 p-8 pt-6">
-        <ProductForm initialData={product} categories={categories} />
-
-
+                <ProductForm 
+                    initialData={product} 
+                    categories={categories}
+                    attributes={attributes}
+                />
             </div>
-            
         </div>
      );
 }

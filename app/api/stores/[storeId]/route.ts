@@ -1,12 +1,13 @@
 import  db  from "@/lib/db";
-import { auth } from "@clerk/nextjs/server";
+import { auth } from "@/auth";
 import { NextResponse } from "next/server";
 
 export async function PATCH(req: Request, { params }: { params: { storeId: string } }) {
     try {
-        const { userId } = await auth();
-        const  body = await req.json();
-        const { name } = body;
+        const session = await auth();
+        const userId = session?.user?.id;
+        const body = await req.json();
+        const { name, logoUrl } = body;
 
         if (!userId) {
             return new NextResponse("Unauthenticated", { status: 401 })
@@ -19,7 +20,10 @@ export async function PATCH(req: Request, { params }: { params: { storeId: strin
         }
         const store = await db.store.updateMany({
             where: { id: params.storeId , userId },
-            data: { name },
+            data: { 
+                name,
+                logoUrl
+            },
         });
 
         return  NextResponse.json(store, { status: 200 });
@@ -31,7 +35,8 @@ export async function PATCH(req: Request, { params }: { params: { storeId: strin
 
 export async function DELETE(req: Request, { params }: { params: { storeId: string } }) {
     try {
-        const { userId } = await auth();
+        const session = await auth();
+        const userId = session?.user?.id;
 
         if (!userId) {
             return new NextResponse("Unauthenticated", { status: 401 })

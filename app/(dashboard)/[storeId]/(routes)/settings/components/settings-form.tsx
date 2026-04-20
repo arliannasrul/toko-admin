@@ -17,13 +17,15 @@ import { useParams, useRouter } from 'next/navigation';
 import  {AlertModal}  from '@/components/modals/alert-modal';
 import { ApiAlert } from '@/components/ui/api-alert';
 import { useOrigin } from '@/hooks/use-origin';
+import ImageUpload from '@/components/ui/image-upload';
 
 interface SettingsFormProps {
     initialData: Store
 }
 
 const formSchema = z.object({
-    name: z.string().min(3)
+    name: z.string().min(3),
+    logoUrl: z.string().min(1).optional().nullable()
 })
 
 type SettingsFormValues = z.infer<typeof formSchema>;
@@ -85,6 +87,20 @@ export const SettingsForm: React.FC<SettingsFormProps> = ({initialData}) => {
             <Separator />
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 w-full">
+                    <FormField control={form.control} name="logoUrl" render={({field}) => (
+                        <FormItem>
+                            <FormLabel>Logo Toko</FormLabel>
+                            <FormControl>
+                                <ImageUpload 
+                                    value={field.value ? [field.value] : []} 
+                                    disabled={loading} 
+                                    onChange={(url) => field.onChange(url)}
+                                    onRemove={() => field.onChange("")}
+                                />
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    ) }/>
                     <div className='grid grid-cols-3 gap-8'>
                         <FormField control={form.control} name="name" render={({field}) => (
                             <FormItem>

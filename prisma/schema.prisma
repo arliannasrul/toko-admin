@@ -18,12 +18,65 @@ model Store {
   id        String   @id @default(cuid())
   name      String
   userId    String
-  banners Banner[]  @relation("StoreToBanner")
+  user      User     @relation("UserToStore", fields: [userId], references: [id])
+  logoUrl   String?
+  banners   Banner[]  @relation("StoreToBanner")
   categories Category[] @relation("StoreToCategory")
-  product Product[] @relation("StoreToProduct")
+  product   Product[] @relation("StoreToProduct")
+  attributes Attribute[] @relation("StoreToAttribute")
+  orders    Order[]   @relation("StoreToOrder")
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt 
+}
 
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  password      String?
+  accounts      Account[]
+  sessions      Session[]
+  stores        Store[]   @relation("UserToStore")
+
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model Account {
+  id                 String  @id @default(cuid())
+  userId             String
+  type               String
+  provider           String
+  providerAccountId  String
+  refresh_token      String?  @db.Text
+  access_token       String?  @db.Text
+  expires_at         Int?
+  token_type         String?
+  scope              String?
+  id_token           String?  @db.Text
+  session_state      String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
 }
 
 model Banner {
@@ -54,31 +107,96 @@ model Category {
   @@index([bannerId])
 }
 
-model Product {
-  id      String @id @default(uuid())
+model Attribute {
+  id      String   @id @default(uuid())
   storeId String
-  store   Store @relation("StoreToProduct", fields: [storeId], references: [id])
-  categoryId String
-  category Category @relation("CategoryToProduct", fields: [categoryId], references: [id])
-  name String
-  price Decimal
-  isFeatured Boolean @default(false)
-  isArchived Boolean @default(false)
-  images    Image[]
+  store   Store    @relation("StoreToAttribute", fields: [storeId], references: [id])
+  name    String   // "RAM", "Storage", "Warna"
+  values  AttributeValue[]
   createdAt DateTime @default(now())
-  updateAt DateTime @updatedAt
+  updatedAt DateTime @updatedAt
+
+  @@index([storeId])
+}
+
+model AttributeValue {
+  id          String   @id @default(uuid())
+  attributeId String
+  attribute   Attribute @relation(fields: [attributeId], references: [id], onDelete: Cascade)
+  name        String   // "8GB", "Space Gray"
+  value       String?  // Optional: Hex code for color visual
+  variants    ProductVariant[] @relation("VariantToAttributeValue")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([attributeId])
+}
+
+model Product {
+  id          String           @id @default(uuid())
+  storeId     String
+  store       Store            @relation("StoreToProduct", fields: [storeId], references: [id])
+  categoryId  String
+  category    Category         @relation("CategoryToProduct", fields: [categoryId], references: [id])
+  name        String
+  description String           @default("")
+  isFeatured  Boolean          @default(false)
+  isArchived  Boolean          @default(false)
+  variants    ProductVariant[] @relation("ProductToVariant")
+  createdAt   DateTime         @default(now())
+  updateAt    DateTime         @updatedAt
 
   @@index([storeId])
   @@index([categoryId])
 }
 
-model Image {
-  id      String @unique @default(uuid())
-  productId String
-  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
-  url     String
-  createdAt DateTime @default(now())
-  updateAt DateTime @updatedAt
+model ProductVariant {
+  id         String      @id @default(uuid())
+  productId  String
+  product    Product     @relation("ProductToVariant", fields: [productId], references: [id], onDelete: Cascade)
+  price      Decimal
+  stock      Int         @default(0)
+  images     Image[]     @relation("VariantToImage")
+  attributeValues AttributeValue[] @relation("VariantToAttributeValue")
+  orderItems OrderItem[]
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
 
   @@index([productId])
+}
+
+model Image {
+  id               String         @unique @default(uuid())
+  productVariantId String
+  variant          ProductVariant @relation("VariantToImage", fields: [productVariantId], references: [id], onDelete: Cascade)
+  url              String
+  createdAt        DateTime       @default(now())
+  updateAt         DateTime       @updatedAt
+
+  @@index([productVariantId])
+}
+
+model Order {
+  id String @id @default(uuid())
+  storeId String
+  store Store @relation("StoreToOrder", fields: [storeId], references: [id])
+  orderItems OrderItem[]
+  isPaid Boolean @default(false)
+  phone String @default("")
+  address String @default("")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([storeId])
+}
+
+model OrderItem {
+  id               String         @id @default(uuid())
+  orderId          String
+  order Order @relation(fields: [orderId], references: [id])
+  productVariantId String
+  variant          ProductVariant @relation(fields: [productVariantId], references: [id])
+
+  @@index([orderId])
+  @@index([productVariantId])
 }
