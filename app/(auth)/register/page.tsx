@@ -18,10 +18,10 @@ const RegisterPage = () => {
         <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent flex flex-col justify-end p-12 space-y-4">
           <div className="flex items-center gap-x-2">
             <div className="h-10 w-10 bg-sky-500 rounded-lg flex items-center justify-center">
-              <span className="text-white text-2xl font-bold italic">T</span>
+              <span className="text-white text-2xl font-bold italic">M</span>
             </div>
             <h1 className="text-3xl font-bold text-white tracking-tight">
-              Tokomu Admin
+              MitraSpace Admin
             </h1>
           </div>
           <p className="text-slate-300 text-lg max-w-md">

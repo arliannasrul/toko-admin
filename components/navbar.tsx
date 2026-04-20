@@ -37,7 +37,7 @@ const Navbar = async ({ currentStoreId }: NavbarProps) => {
                <Image fill src={stores.find(s => s.id === currentStoreId)?.logoUrl!} alt="Logo" className="object-contain object-left" />
              </div>
           ) : (
-            "Tokomu"
+            "MitraSpace"
           )}
         </Link>
       </div>

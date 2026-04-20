@@ -216,14 +216,14 @@ const StorePage = async ({ params }: StorePageProps) => {
             <div className="px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-6">
                 <div className="flex items-center gap-x-2">
                     <div className="h-8 w-8 bg-slate-950 rounded-xl flex items-center justify-center">
-                        <span className="text-white text-lg font-black italic">T</span>
+                        <span className="text-white text-lg font-black italic">M</span>
                     </div>
                     <span className="text-xl font-black tracking-tight text-slate-950">
-                        TOKOMU<span className="text-sky-600">.</span>
+                        MitraSpace<span className="text-sky-600">.</span>
                     </span>
                 </div>
                 <p className="text-sm text-slate-500 font-medium">
-                    &copy; 2026 Tokomu Online. Member of Premium Group.
+                    &copy; 2026 MitraSpace. Member of Premium Group.
                 </p>
             </div>
         </Container>

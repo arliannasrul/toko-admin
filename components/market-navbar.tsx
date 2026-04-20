@@ -33,10 +33,10 @@ export const MarketNavbar = () => {
       <div className="flex items-center gap-x-8">
         <Link href="/" className="flex items-center gap-x-2 group">
            <div className="h-10 w-10 bg-slate-950 rounded-2xl flex items-center justify-center transition-transform group-hover:rotate-6 group-hover:scale-110">
-              <span className="text-white text-2xl font-black italic">T</span>
+              <span className="text-white text-2xl font-black italic">M</span>
            </div>
            <span className="text-2xl font-black tracking-tight text-slate-900 hidden md:block">
-            TOKOMU<span className="text-sky-600">.</span>
+            MitraSpace<span className="text-sky-600">.</span>
            </span>
         </Link>
 

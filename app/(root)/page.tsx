@@ -102,7 +102,7 @@ const MarketplacePage = async () => {
               Peluang Bisnis
             </span>
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-black text-white tracking-tight mb-4 leading-tight">
-              Mulai Langkah Sukses<br/>Bersama <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-indigo-400">TOKOMU.</span>
+              Mulai Langkah Sukses<br/>Bersama <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-indigo-400">MitraSpace.</span>
             </h2>
             <p className="text-slate-400 text-base md:text-lg max-w-xl mx-auto mb-8 leading-relaxed">
               Bergabung dengan ribuan UMKM sukses lainnya. Buat toko online Anda secara gratis, kelola produk dengan mudah, dan jangkau jutaan pelanggan potensial.
@@ -139,14 +139,14 @@ const MarketplacePage = async () => {
         <div className="max-w-7xl mx-auto px-4 md:px-12 flex flex-col md:flex-row justify-between items-center gap-6">
             <div className="flex items-center gap-x-2">
                 <div className="h-8 w-8 bg-slate-950 rounded-xl flex items-center justify-center">
-                    <span className="text-white text-lg font-black italic">T</span>
+                    <span className="text-white text-lg font-black italic">M</span>
                 </div>
                 <span className="text-xl font-black tracking-tight text-slate-950">
-                    TOKOMU<span className="text-sky-600">.</span>
+                    MitraSpace<span className="text-sky-600">.</span>
                 </span>
             </div>
             <p className="text-sm text-slate-500 font-medium">
-                &copy; {new Date().getFullYear()} Tokomu Online. Member of Premium Group. All rights reserved.
+                &copy; {new Date().getFullYear()} MitraSpace. Member of Premium Group. All rights reserved.
             </p>
         </div>
       </footer>
