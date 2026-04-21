@@ -72,6 +72,17 @@ export const VariantSelector: React.FC<VariantSelectorProps> = ({
         const params = new URLSearchParams(searchParams.toString());
         params.set('variantId', target.id);
         router.push(`${pathname}?${params.toString()}`, { scroll: false });
+    } else {
+        // FALLBACK: If strict combination doesn't exist, find ANY variant that has the newly clicked value
+        const fallbackTarget = variants.find(v => 
+            v.attributeValues.some(av => av.attributeId === attributeId && av.id === valueId)
+        );
+
+        if (fallbackTarget) {
+            const params = new URLSearchParams(searchParams.toString());
+            params.set('variantId', fallbackTarget.id);
+            router.push(`${pathname}?${params.toString()}`, { scroll: false });
+        }
     }
   };
 
@@ -84,10 +95,7 @@ export const VariantSelector: React.FC<VariantSelectorProps> = ({
   return (
     <div className="flex flex-col gap-y-10 p-4">
       {categories.map((category) => {
-        const isExplicitlySelected = !!searchParams.get("variantId");
-        const activeValueId = isExplicitlySelected 
-            ? activeVariant.attributeValues.find(av => av.attributeId === category.attribute.id)?.id 
-            : null;
+        const activeValueId = activeVariant.attributeValues.find(av => av.attributeId === category.attribute.id)?.id;
         
         return (
           <div key={category.attribute.id} className="flex flex-col gap-y-5">
