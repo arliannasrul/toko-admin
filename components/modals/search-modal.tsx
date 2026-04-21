@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Search, Store as StoreIcon, Package, ArrowRight } from "lucide-react";
 import axios from "axios";
+import Image from "next/image";
 
 import {
   CommandDialog,
@@ -100,7 +101,7 @@ export const SearchModal = () => {
                             className="flex items-center gap-2 cursor-pointer text-sky-600"
                         >
                             <Search className="h-4 w-4" />
-                            <span>Cari selengkapnya untuk "{query}"</span>
+                            <span>Cari selengkapnya untuk &quot;{query}&quot;</span>
                         </CommandItem>
                     </CommandGroup>
                 )}
@@ -136,10 +137,11 @@ export const SearchModal = () => {
                             >
                                 <div className="h-10 w-10 bg-slate-50 dark:bg-slate-800 rounded-xl overflow-hidden relative border border-slate-200 dark:border-slate-800">
                                     {product.variants[0]?.images[0] ? (
-                                        <img 
+                                        <Image 
                                             src={product.variants[0].images[0].url} 
                                             alt={product.name}
-                                            className="object-cover h-full w-full"
+                                            fill
+                                            className="object-cover"
                                         />
                                     ) : (
                                         <Package className="h-4 w-4 m-auto text-slate-300" />

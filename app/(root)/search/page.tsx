@@ -65,7 +65,7 @@ const SearchPage = async ({ searchParams }: SearchPageProps) => {
       <div className="pt-32 px-4 md:px-12 max-w-7xl mx-auto">
         <div className="flex flex-col gap-4 mb-12">
             <h1 className="text-4xl font-black text-slate-900 dark:text-white tracking-tight">
-                Hasil Pencarian: <span className="text-sky-600">"{query}"</span>
+                Hasil Pencarian: <span className="text-sky-600">&quot;{query}&quot;</span>
             </h1>
             <p className="text-slate-500 dark:text-slate-400 font-medium">
                 Ditemukan {products.length} produk dan {stores.length} toko yang sesuai.
