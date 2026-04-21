@@ -9,7 +9,7 @@ export async function POST(req: Request) {
         const userId = session?.user?.id;
         const body = await req.json()
 
-        const {name} = body
+        const {name, type} = body
 
         if (!userId) {
             return new NextResponse("unauthorized", { status: 401 })
@@ -27,10 +27,15 @@ export async function POST(req: Request) {
         if (!name) {
             return new NextResponse("Nama toko perlu diisi", { status: 400 })
         }
+        
+        if (!type) {
+            return new NextResponse("Tipe toko perlu diplih", { status: 400 })
+        }
 
         const store = await db.store.create({
             data: {
                 name,
+                type,
                 userId
             }
         })

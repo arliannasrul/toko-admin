@@ -4,10 +4,22 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/componen
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
-import { Store as StoreIcon, ArrowRight } from "lucide-react";
+import { 
+    Store as StoreIcon, 
+    ArrowRight 
+} from "lucide-react";
+import { CategoryFilter } from "@/components/category-filter";
+import { AIRecommendations } from "@/components/ai-recommendations";
 
-const MarketplacePage = async () => {
+const MarketplacePage = async ({
+    searchParams
+}: {
+    searchParams: { type?: string }
+}) => {
+  const filterType = searchParams.type;
+
   const stores = await db.store.findMany({
+    where: filterType ? { type: filterType } : undefined,
     orderBy: {
       createdAt: "desc"
     }
@@ -17,20 +29,19 @@ const MarketplacePage = async () => {
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950 transition-colors duration-300">
       <MarketNavbar />
       
-      {/* Hero Section */}
-      <section className="pt-32 pb-16 px-4 md:px-12 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-sky-400/20 dark:from-sky-500/10 via-slate-50 dark:via-slate-950 to-slate-50 dark:to-slate-950">
-        <div className="max-w-7xl mx-auto text-center space-y-4">
-          <h1 className="text-5xl md:text-7xl font-black tracking-tight text-slate-900 dark:text-white animate-in fade-in slide-in-from-bottom duration-700">
-            Jelajahi <span className="text-sky-600">Ribuan Toko</span> <br/> Dalam Satu Genggaman.
-          </h1>
-          <p className="text-slate-500 dark:text-slate-400 text-lg md:text-xl max-w-2xl mx-auto animate-in fade-in slide-in-from-bottom duration-1000">
-            Temukan produk terbaik dari berbagai UMKM pilihan di seluruh Indonesia. Cepat, aman, dan terpercaya.
-          </p>
-        </div>
-      </section>
+      {/* Spacer for Navbar */}
+      <div className="pt-24" />
+
+      {/* AI Recommendations Section */}
+      <AIRecommendations />
+
+      {/* Filter Navigation - Premium Version */}
+      <div id="categories">
+        <CategoryFilter />
+      </div>
 
       {/* Stores Grid */}
-      <section className="px-4 md:px-12 pb-24 max-w-7xl mx-auto">
+      <section id="stores" className="px-4 md:px-12 pb-24 max-w-7xl mx-auto">
         <div className="flex items-center justify-between mb-8">
             <h2 className="text-2xl font-bold text-slate-800 dark:text-slate-100 flex items-center gap-x-2">
                 <StoreIcon className="h-6 w-6 text-sky-600" />
@@ -49,40 +60,59 @@ const MarketplacePage = async () => {
             </Link>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-6">
             {stores.map((store) => (
               <Link key={store.id} href={`/store/${store.id}`}>
-                <Card className="group hover:shadow-2xl transition-all duration-300 border-none bg-white dark:bg-slate-900 overflow-hidden shadow-sm hover:ring-1 hover:ring-sky-500/50">
-                  <div className="h-40 bg-slate-100 dark:bg-slate-800 relative">
-                    {store.logoUrl ? (
-                      <Image 
-                        src={store.logoUrl} 
-                        alt={store.name} 
-                        fill 
-                        className="object-cover group-hover:scale-105 transition-transform duration-500"
-                      />
-                    ) : (
-                      <div className="h-full w-full flex items-center justify-center bg-sky-50 dark:bg-sky-500/10 text-sky-500">
-                        <StoreIcon className="h-12 w-12 opacity-20" />
-                      </div>
-                    )}
-                    <div className="absolute inset-0 bg-black/5 group-hover:bg-transparent transition-colors" />
-                  </div>
-                  <CardHeader className="pb-2">
-                    <CardTitle className="text-xl font-bold text-slate-800 dark:text-slate-100 line-clamp-1">{store.name}</CardTitle>
-                  </CardHeader>
-                  <CardContent className="pb-4">
-                    <div className="flex gap-x-2 mb-4">
-                        <span className="px-2 py-1 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 text-xs rounded-md">Verified</span>
-                        <span className="px-2 py-1 bg-sky-50 dark:bg-sky-500/10 text-sky-600 text-xs rounded-md font-medium">Top Rated</span>
+                <Card className="group hover:shadow-2xl transition-all duration-500 border-none bg-white dark:bg-slate-900 overflow-hidden shadow-sm hover:ring-2 hover:ring-sky-500/20 relative">
+                  <div className="p-4 md:p-6 flex items-center gap-x-5 md:gap-x-6">
+                    {/* Logo Section */}
+                    <div className="relative h-20 w-20 md:h-24 md:w-24 shrink-0 bg-slate-50 dark:bg-slate-800 rounded-3xl overflow-hidden border border-slate-100 dark:border-slate-800 group-hover:scale-105 transition-transform duration-500">
+                      {store.logoUrl ? (
+                        <Image 
+                          src={store.logoUrl} 
+                          alt={store.name} 
+                          fill 
+                          className="object-cover"
+                        />
+                      ) : (
+                        <div className="h-full w-full flex items-center justify-center bg-sky-50 dark:bg-sky-500/10 text-sky-500">
+                          <StoreIcon className="h-10 w-10 opacity-20" />
+                        </div>
+                      )}
                     </div>
-                  </CardContent>
-                  <CardFooter className="pt-0 flex items-center justify-between">
-                    <span className="text-xs text-slate-400 dark:text-slate-500">Bergabung {new Date(store.createdAt).toLocaleDateString()}</span>
-                    <Button size="sm" variant="ghost" className="text-sky-600 group-hover:bg-sky-50 p-2 h-8 w-8 rounded-full">
-                        <ArrowRight className="h-4 w-4" />
-                    </Button>
-                  </CardFooter>
+
+                    {/* Content Section */}
+                    <div className="flex flex-col flex-1 min-w-0 py-1">
+                      <div className="flex items-center justify-between mb-1">
+                        <span className="text-[10px] font-black uppercase tracking-[0.2em] text-sky-600 dark:text-sky-400 truncate">
+                          {store.type}
+                        </span>
+                        <div className="h-2 w-2 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.6)]" />
+                      </div>
+                      
+                      <h3 className="text-xl md:text-2xl font-black text-slate-900 dark:text-white truncate group-hover:text-sky-600 transition-colors">
+                        {store.name}
+                      </h3>
+                      
+                      <div className="mt-3 flex items-center gap-x-3">
+                        <div className="flex -space-x-2">
+                           {[1,2,3].map(i => (
+                             <div key={i} className="h-6 w-6 rounded-full border-2 border-white dark:border-slate-900 bg-slate-200 dark:bg-slate-700 flex items-center justify-center">
+                                <div className="h-full w-full rounded-full bg-sky-100 dark:bg-sky-900/30" />
+                             </div>
+                           ))}
+                        </div>
+                        <span className="text-[10px] md:text-xs text-slate-500 dark:text-slate-400 font-bold">Verified Partner</span>
+                      </div>
+
+                      <div className="mt-4 pt-3 border-t border-slate-50 dark:border-slate-800 flex items-center justify-between">
+                         <span className="text-[10px] text-slate-400 dark:text-slate-500 font-medium">Buka Sejak {new Date(store.createdAt).getFullYear()}</span>
+                         <Button size="icon" variant="ghost" className="h-8 w-8 rounded-full bg-slate-50 dark:bg-slate-800 text-sky-600 group-hover:bg-sky-600 group-hover:text-white transition-all scale-75 group-hover:scale-100">
+                            <ArrowRight className="h-4 w-4" />
+                         </Button>
+                      </div>
+                    </div>
+                  </div>
                 </Card>
               </Link>
             ))}
@@ -135,7 +165,7 @@ const MarketplacePage = async () => {
       </section>
 
       {/* Actual Global Footer */}
-      <footer className="border-t border-slate-200 dark:border-slate-800 py-12 bg-white dark:bg-slate-950 transition-colors">
+      <footer id="about" className="border-t border-slate-200 dark:border-slate-800 py-12 bg-white dark:bg-slate-950 transition-colors">
         <div className="max-w-7xl mx-auto px-4 md:px-12 flex flex-col md:flex-row justify-between items-center gap-6">
             <div className="flex items-center gap-x-2">
                 <div className="h-8 w-8 bg-slate-950 dark:bg-slate-100 rounded-xl flex items-center justify-center">

@@ -12,10 +12,22 @@ import { Button } from "../ui/button"
 import { useState } from "react"
 import axios from "axios"
 import toast from "react-hot-toast"
-import { useRouter } from "next/navigation"; // ✅ Tambahkan ini
+import { useRouter } from "next/navigation"; 
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+
+export const storeTypes = [
+    "Pakaian & Fashion",
+    "Elektronik & Gadget",
+    "Makanan & Minuman",
+    "Kesehatan & Kecantikan",
+    "Jasa & Layanan",
+    "Karya Seni & Kerajinan",
+    "Lainnya"
+];
 
 const formSchema = z.object({
-    name : z.string().min(1),
+    name : z.string().min(1, { message: "Nama toko wajib diisi" }),
+    type : z.string().min(1, { message: "Tipe toko wajib dipilih" })
 });
 
 
@@ -27,7 +39,8 @@ export const StoreModal = () => {
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema), 
         defaultValues: {
-        name: "",
+            name: "",
+            type: ""
         },
     })
 
@@ -70,6 +83,28 @@ export const StoreModal = () => {
                                 disabled={loading}
                                 />
                             </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                    />
+                    <FormField 
+                    control={form.control}
+                    name="type"
+                    render={({field}) => (
+                        <FormItem>
+                            <FormLabel>Tipe Toko</FormLabel>
+                            <Select disabled={loading} onValueChange={field.onChange} value={field.value} defaultValue={field.value}>
+                                <FormControl>
+                                    <SelectTrigger>
+                                        <SelectValue placeholder="Pilih Tipe Toko" />
+                                    </SelectTrigger>
+                                </FormControl>
+                                <SelectContent>
+                                    {storeTypes.map((type) => (
+                                        <SelectItem key={type} value={type}>{type}</SelectItem>
+                                    ))}
+                                </SelectContent>
+                            </Select>
                             <FormMessage />
                         </FormItem>
                     )}

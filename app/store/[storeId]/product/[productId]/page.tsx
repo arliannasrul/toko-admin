@@ -5,6 +5,7 @@ import { Gallery } from "./components/gallery";
 import { Info } from "./components/info";
 import Link from "next/link";
 import Image from "next/image";
+import { auth } from "@/auth";
 
 interface ProductPageProps {
   params: {
@@ -20,6 +21,28 @@ const ProductPage = async ({
   params,
   searchParams
 }: ProductPageProps) => {
+  const session = await auth();
+  const userId = session?.user?.id;
+
+  // Track View & Popularity
+  try {
+    await db.product.update({
+      where: { id: params.productId },
+      data: { clickCount: { increment: 1 } }
+    });
+
+    if (userId) {
+      await db.userView.create({
+        data: {
+          userId,
+          productId: params.productId
+        }
+      });
+    }
+  } catch (error) {
+    console.error("[PRODUCT_TRACKING_ERROR]", error);
+  }
+
   // Fetch Product Master including all Variants
   const product = await db.product.findUnique({
     where: {
@@ -80,7 +103,7 @@ const ProductPage = async ({
     const allImages = product.variants.flatMap((v) => v.images);
 
     return (
-        <div className="bg-[#fafafa] min-h-screen">
+        <div className="bg-[#fafafa] dark:bg-slate-950 min-h-screen transition-colors duration-300">
           <MarketNavbar />
           <div className="pt-28 pb-20">
             <Container>
@@ -101,25 +124,25 @@ const ProductPage = async ({
                 
                 <div className="mt-24 space-y-12">
                    <div className="flex items-center justify-between">
-                     <h2 className="text-3xl font-black text-slate-900 tracking-tight flex items-center gap-x-4">
-                        <span className="h-10 w-2 bg-slate-900 rounded-full" />
+                     <h2 className="text-3xl font-black text-slate-900 dark:text-white tracking-tight flex items-center gap-x-4">
+                        <span className="h-10 w-2 bg-slate-900 dark:bg-slate-100 rounded-full" />
                         Produk Terkait
                      </h2>
-                     <div className="h-[2px] flex-1 bg-slate-100 ml-8 hidden md:block" />
+                     <div className="h-[2px] flex-1 bg-slate-100 dark:bg-slate-800 ml-8 hidden md:block" />
                    </div>
                    
                    {suggestedProducts.length === 0 ? (
-                     <div className="text-center py-20 bg-white rounded-[3rem] border border-dashed border-slate-200">
+                     <div className="text-center py-20 bg-white dark:bg-slate-900 rounded-[3rem] border border-dashed border-slate-200 dark:border-slate-800">
                         <p className="text-slate-400 font-medium italic">Belum ada produk terkait lainnya.</p>
                      </div>
                    ) : (
-                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                     <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8">
                        {suggestedProducts.map((item) => {
                           const displayVariant = item.variants[0];
                           return (
                             <Link key={item.id} href={`/store/${params.storeId}/product/${item.id}`}>
-                              <div className="bg-white group cursor-pointer rounded-[2.5rem] border border-slate-100 p-4 space-y-6 hover:shadow-[0_30px_60px_-15px_rgba(0,0,0,0.1)] transition-all duration-500 hover:-translate-y-2">
-                                <div className="aspect-square rounded-[2rem] bg-slate-50 relative overflow-hidden">
+                              <div className="bg-white dark:bg-slate-900 group cursor-pointer rounded-[1.5rem] md:rounded-[2.5rem] border border-slate-100 dark:border-slate-800 p-2 md:p-4 space-y-4 md:space-y-6 hover:shadow-[0_30px_60px_-15px_rgba(0,0,0,0.1)] dark:hover:shadow-[0_30px_60px_-15px_rgba(255,255,255,0.05)] transition-all duration-500 hover:-translate-y-2">
+                                <div className="aspect-square rounded-[1rem] md:rounded-[2rem] bg-slate-50 dark:bg-slate-800 relative overflow-hidden">
                                   {displayVariant?.images?.[0] ? (
                                     <Image 
                                       src={displayVariant.images[0].url} 
@@ -140,15 +163,15 @@ const ProductPage = async ({
                                     <p className="text-[10px] font-black uppercase tracking-[0.2em] text-sky-600">
                                         {item.category?.name}
                                     </p>
-                                    <p className="font-black text-lg text-slate-900 line-clamp-1">
+                                    <p className="font-black text-sm md:text-lg text-slate-900 dark:text-white line-clamp-1">
                                         {item.name}
                                     </p>
                                   </div>
                                   
                                   {displayVariant && (
-                                    <div className="flex items-center justify-between">
-                                        <p className="font-bold text-slate-400 text-sm">IDR</p>
-                                        <p className="font-black text-slate-900 text-xl tracking-tighter">
+                                    <div className="flex items-center justify-between border-t border-slate-50 dark:border-slate-800 pt-1 md:pt-2">
+                                        <p className="font-bold text-slate-400 text-[10px] md:text-sm mr-1">IDR</p>
+                                        <p className="font-black text-slate-900 dark:text-white text-base md:text-xl tracking-tighter">
                                             {new Intl.NumberFormat("id-ID").format(Number(displayVariant.price))}
                                         </p>
                                     </div>

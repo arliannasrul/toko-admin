@@ -10,6 +10,8 @@ import { useState, useEffect } from "react";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { cn } from "@/lib/utils";
 
+import { SearchModal } from "@/components/modals/search-modal";
+
 export const MarketNavbar = () => {
   const { data: session } = useSession();
   const [isScrolled, setIsScrolled] = useState(false);
@@ -23,7 +25,13 @@ export const MarketNavbar = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  const onOpenSearch = () => {
+    window.dispatchEvent(new CustomEvent("open-search"));
+  };
+
   return (
+    <>
+    <SearchModal />
     <nav className={cn(
         "fixed top-0 w-full z-50 transition-all duration-300 px-4 md:px-12 flex items-center justify-between",
         isScrolled 
@@ -43,18 +51,20 @@ export const MarketNavbar = () => {
 
         {/* Desktop Nav Links (Simplified) */}
         <div className="hidden lg:flex items-center gap-x-6 text-sm font-semibold text-slate-500 dark:text-slate-400">
-            <Link href="/" className="hover:text-slate-950 dark:hover:text-white transition-colors">Semua Produk</Link>
-            <Link href="/" className="hover:text-slate-950 dark:hover:text-white transition-colors">Kategori</Link>
-            <Link href="/" className="hover:text-slate-950 dark:hover:text-white transition-colors">Tentang Kami</Link>
+            <Link href="/#stores" className="hover:text-slate-950 dark:hover:text-white transition-colors">Semua Produk</Link>
+            <Link href="/#categories" className="hover:text-slate-950 dark:hover:text-white transition-colors">Kategori</Link>
+            <Link href="/#about" className="hover:text-slate-950 dark:hover:text-white transition-colors">Tentang Kami</Link>
         </div>
       </div>
 
       {/* Global Search */}
-      <div className="hidden md:flex flex-1 max-w-sm mx-12 relative group">
-        <Input 
-            placeholder="Cari produk gaya hidup..." 
-            className="w-full pl-10 h-11 bg-slate-100/50 dark:bg-slate-800/50 border-none focus-visible:ring-sky-500 rounded-2xl group-hover:bg-slate-100 dark:group-hover:bg-slate-800 transition-colors dark:text-white placeholder:text-slate-500 dark:placeholder:text-slate-400"
-        />
+      <div 
+        onClick={onOpenSearch}
+        className="hidden md:flex flex-1 max-w-sm mx-12 relative group cursor-pointer"
+      >
+        <div className="w-full pl-10 pr-16 h-11 bg-slate-100/50 dark:bg-slate-800/50 border-none rounded-2xl group-hover:bg-slate-100 dark:group-hover:bg-slate-800 transition-colors flex items-center text-sm text-slate-500 dark:text-slate-400">
+            Cari produk atau toko...
+        </div>
         <Search className="absolute left-3.5 top-3 h-5 w-5 text-slate-400 group-hover:text-sky-600 transition-colors" />
         <div className="absolute right-3 top-2.5 h-6 px-1.5 flex items-center justify-center rounded-md border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-[10px] font-bold text-slate-400 dark:text-slate-500">
             ⌘K
@@ -72,12 +82,21 @@ export const MarketNavbar = () => {
         </Button>
         <div className="h-6 w-[1px] bg-slate-200 dark:bg-slate-800 mx-1 hidden sm:block" />
         <div className="hidden sm:block">
-            <UserNav />
+            {session?.user ? (
+                <UserNav />
+            ) : (
+                <Link href="/login">
+                  <Button variant="default" className="bg-sky-600 hover:bg-sky-700 text-white rounded-full px-6 font-semibold shadow-sm">
+                    Masuk
+                  </Button>
+                </Link>
+            )}
         </div>
         <Button variant="ghost" size="icon" className="md:hidden rounded-2xl">
             <Menu className="h-6 w-6" />
         </Button>
       </div>
     </nav>
+    </>
   );
 };

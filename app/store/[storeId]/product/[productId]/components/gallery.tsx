@@ -36,7 +36,7 @@ export const Gallery: React.FC<GalleryProps> = ({
             <h3 className="text-xs font-black uppercase tracking-[0.3em] text-slate-400">
                 Koleksi Galeri ({allImages.length})
             </h3>
-            <div className="h-[1px] flex-1 bg-gradient-to-r from-slate-200 to-transparent ml-4" />
+            <div className="h-[1px] flex-1 bg-gradient-to-r from-slate-200 dark:from-slate-800 to-transparent ml-4" />
         </div>
         
         <div className="flex items-center gap-x-5 overflow-x-auto pb-6 scrollbar-hide snap-x pointer-events-auto">
@@ -47,10 +47,10 @@ export const Gallery: React.FC<GalleryProps> = ({
               whileTap={{ scale: 0.95 }}
               onClick={() => setMainImage(image.url)}
               className={cn(
-                "relative flex-shrink-0 w-28 aspect-square cursor-pointer items-center justify-center rounded-[2rem] bg-white transition-all duration-500 snap-start overflow-hidden border-2 shadow-sm",
+                "relative flex-shrink-0 w-28 aspect-square cursor-pointer items-center justify-center rounded-[2rem] bg-white dark:bg-slate-900 transition-all duration-500 snap-start overflow-hidden border-2 shadow-sm",
                 mainImage === image.url 
-                    ? "border-sky-500 shadow-sky-100 shadow-xl scale-105 z-10" 
-                    : "border-slate-100 hover:border-sky-200 opacity-70 hover:opacity-100"
+                    ? "border-sky-500 shadow-sky-100 dark:shadow-none shadow-xl scale-105 z-10" 
+                    : "border-slate-100 dark:border-slate-800 hover:border-sky-200 dark:hover:border-sky-800 opacity-70 hover:opacity-100"
               )}
             >
                 <Image
@@ -71,7 +71,7 @@ export const Gallery: React.FC<GalleryProps> = ({
       </motion.div>
 
       {/* Main Image Display with Framer Motion Animation */}
-      <div className="group aspect-square w-full relative rounded-[3rem] overflow-hidden bg-slate-50 border border-slate-100 shadow-2xl shadow-slate-200/50">
+      <div className="group aspect-square w-full relative rounded-[3rem] overflow-hidden bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-800 shadow-2xl shadow-slate-200/50 dark:shadow-none">
         <AnimatePresence mode="wait">
             <motion.div
                 key={mainImage}
@@ -96,7 +96,7 @@ export const Gallery: React.FC<GalleryProps> = ({
             <motion.div 
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
-                className="bg-white/80 backdrop-blur-md px-4 py-2 rounded-full border border-white/20 shadow-lg"
+                className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-md px-4 py-2 rounded-full border border-white/20 dark:border-slate-800/50 shadow-lg"
             >
                 <span className="text-[10px] font-black uppercase tracking-widest text-sky-600">Premium Quality</span>
             </motion.div>

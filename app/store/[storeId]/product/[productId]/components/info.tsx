@@ -5,7 +5,8 @@ import { ShoppingCart, Package, AlertCircle, ShieldCheck, Truck, RotateCcw } fro
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { VariantSelector } from "./variant-selector";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 
@@ -33,6 +34,8 @@ export const Info: React.FC<InfoProps> = ({
   variants
 }) => {
   const searchParams = useSearchParams();
+  const router = useRouter();
+  const { data: session } = useSession();
   const isSelectedExplicitly = !!searchParams.get("variantId");
 
   return (
@@ -62,7 +65,7 @@ export const Info: React.FC<InfoProps> = ({
             </div>
         </div>
 
-        <h1 className="text-4xl md:text-5xl font-black text-slate-900 leading-tight">
+        <h1 className="text-4xl md:text-5xl font-black text-slate-900 dark:text-white leading-tight">
             {product.name}
         </h1>
       </div>
@@ -70,30 +73,32 @@ export const Info: React.FC<InfoProps> = ({
       <div className="flex flex-col gap-y-2">
         <div className="flex items-baseline gap-x-2">
             <span className="text-xl font-bold text-slate-400 italic">IDR</span>
-            <p className="text-5xl font-black text-slate-900 tracking-tighter">
+            <p className="text-5xl font-black text-slate-900 dark:text-white tracking-tighter">
               {new Intl.NumberFormat("id-ID").format(Number(activeVariant.price))}
             </p>
         </div>
         
         {/* Selected Specs Badges */}
-        <div className="flex flex-wrap items-center gap-2 mt-4">
-            {activeVariant.attributeValues.map((av) => (
-                <motion.div 
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    key={av.id}
-                    className="flex items-center gap-x-2 text-[10px] font-black px-4 py-2 bg-white text-slate-500 rounded-xl border border-slate-200 shadow-sm uppercase tracking-wider"
-                >
-                    {av.value && av.value.startsWith('#') && (
-                        <div className="h-3 w-3 rounded-full border border-slate-200 shadow-inner" style={{ backgroundColor: av.value }} />
-                    )}
-                    {av.attribute.name}: <span className="text-slate-900">{av.name}</span>
-                </motion.div>
-            ))}
-        </div>
+        {isSelectedExplicitly && (
+          <div className="flex flex-wrap items-center gap-2 mt-4">
+              {activeVariant.attributeValues.map((av) => (
+                  <motion.div 
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      key={av.id}
+                      className="flex items-center gap-x-2 text-[10px] font-black px-4 py-2 bg-white dark:bg-slate-800 text-slate-500 dark:text-slate-300 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm uppercase tracking-wider"
+                  >
+                      {av.value && av.value.startsWith('#') && (
+                          <div className="h-3 w-3 rounded-full border border-slate-200 dark:border-slate-600 shadow-inner" style={{ backgroundColor: av.value }} />
+                      )}
+                      {av.attribute.name}: <span className="text-slate-900 dark:text-white">{av.name}</span>
+                  </motion.div>
+              ))}
+          </div>
+        )}
       </div>
 
-      <div className="bg-slate-50/50 backdrop-blur-sm p-2 rounded-[2.5rem]">
+      <div className="bg-slate-50/50 dark:bg-slate-900/50 backdrop-blur-sm p-2 rounded-[2.5rem]">
         <VariantSelector 
             activeVariant={activeVariant} 
             variants={variants} 
@@ -101,12 +106,12 @@ export const Info: React.FC<InfoProps> = ({
       </div>
 
       {/* Description Section with Modern Toggle style (expanded by default) */}
-      <div className="space-y-3 bg-white p-6 rounded-3xl border border-slate-100 shadow-sm">
+      <div className="space-y-3 bg-white dark:bg-slate-900 p-6 rounded-3xl border border-slate-100 dark:border-slate-800 shadow-sm">
          <div className="flex items-center gap-x-2 text-slate-400">
             <AlertCircle className="h-4 w-4" />
             <h3 className="text-xs font-black uppercase tracking-widest">Detail Produk</h3>
          </div>
-         <p className="text-slate-600 text-sm leading-relaxed">
+         <p className="text-slate-600 dark:text-slate-300 text-sm leading-relaxed">
             {product.description || "Hubungi kami untuk informasi detail mengenai produk premium ini."}
          </p>
       </div>
@@ -138,7 +143,7 @@ export const Info: React.FC<InfoProps> = ({
             <motion.div 
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="flex items-center justify-center gap-x-2 text-rose-500 bg-white p-4 rounded-3xl border-2 border-rose-100 shadow-xl mb-4"
+                className="flex items-center justify-center gap-x-2 text-rose-500 bg-white dark:bg-slate-900 p-4 rounded-3xl border-2 border-rose-100 dark:border-rose-900 shadow-xl mb-4"
             >
                 <div className="h-2 w-2 rounded-full bg-rose-500 animate-bounce" />
                 <p className="text-[10px] font-black uppercase tracking-[0.1em]">Pilih Spesifikasi Terlebih Dahulu</p>
@@ -147,11 +152,16 @@ export const Info: React.FC<InfoProps> = ({
 
         <Button 
             disabled={activeVariant.stock === 0 || !isSelectedExplicitly}
+            onClick={() => {
+                if (!session?.user) {
+                    router.push("/login");
+                }
+            }}
             className={cn(
                 "w-full h-20 rounded-[2.5rem] text-xl font-black transition-all duration-500 shadow-2xl flex items-center justify-center gap-x-3",
                 isSelectedExplicitly 
-                    ? "bg-slate-900 text-white hover:bg-black hover:scale-[1.02] active:scale-95 shadow-slate-300" 
-                    : "bg-slate-100 text-slate-400 cursor-not-allowed shadow-none"
+                    ? "bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 hover:bg-black dark:hover:bg-slate-200 hover:scale-[1.02] active:scale-95 shadow-slate-300 dark:shadow-none" 
+                    : "bg-slate-100 dark:bg-slate-800 text-slate-400 dark:text-slate-600 cursor-not-allowed shadow-none"
             )}
         >
           {activeVariant.stock === 0 

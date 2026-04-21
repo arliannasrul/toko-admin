@@ -1,5 +1,7 @@
 "use client"
 import * as z from 'zod';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { storeTypes } from '@/components/modals/store-modal';
 
 import { Store } from "@/app/generated/prisma";
 import { Button } from "@/components/ui/button";
@@ -25,6 +27,7 @@ interface SettingsFormProps {
 
 const formSchema = z.object({
     name: z.string().min(3),
+    type: z.string().min(1),
     logoUrl: z.string().min(1).optional().nullable()
 })
 
@@ -111,7 +114,24 @@ export const SettingsForm: React.FC<SettingsFormProps> = ({initialData}) => {
                                 <FormMessage />
                             </FormItem>
                         ) }/>
-
+                        <FormField control={form.control} name="type" render={({field}) => (
+                            <FormItem>
+                                <FormLabel>Tipe Toko</FormLabel>
+                                <Select disabled={loading} onValueChange={field.onChange} value={field.value} defaultValue={field.value}>
+                                    <FormControl>
+                                        <SelectTrigger>
+                                            <SelectValue placeholder="Pilih Tipe Toko" />
+                                        </SelectTrigger>
+                                    </FormControl>
+                                    <SelectContent>
+                                        {storeTypes.map((type) => (
+                                            <SelectItem key={type} value={type}>{type}</SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
+                                <FormMessage />
+                            </FormItem>
+                        ) }/>
                     </div>
                     <Button disabled={loading} className='ml-auto' type="submit">
                         Save

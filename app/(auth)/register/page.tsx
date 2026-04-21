@@ -21,11 +21,14 @@ const RegisterPage = () => {
               <span className="text-white text-2xl font-bold italic">M</span>
             </div>
             <h1 className="text-3xl font-bold text-white tracking-tight">
-              MitraSpace Admin
+              MitraSpace
             </h1>
           </div>
+          <h2 className="text-4xl font-black text-white leading-tight">
+            Jelajahi <span className="text-sky-400">Ribuan Toko</span> <br/> Dalam Satu Genggaman.
+          </h2>
           <p className="text-slate-300 text-lg max-w-md">
-            Mulai bangun impian e-commerce Anda hari ini. Bergabung bersama ribuan toko modern lainnya.
+            Temukan produk terbaik dari berbagai UMKM pilihan di seluruh Indonesia. Cepat, aman, dan terpercaya.
           </p>
         </div>
       </div>

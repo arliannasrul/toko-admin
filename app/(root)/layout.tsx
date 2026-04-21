@@ -10,9 +10,6 @@ export default async function setupLayout ({
     const session = await auth();
     const userId = session?.user?.id;
 
-    if (!userId) {
-        redirect("/login")
-    }
 
     return (
         <>
