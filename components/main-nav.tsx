@@ -75,7 +75,7 @@ export function MainNav({
         <nav className={cn(
             "flex items-center space-x-4 lg:space-x-6",
             isCollapsed && "flex-col space-x-0 space-y-4 items-center",
-            !isCollapsed && className.includes("flex-col") && "flex-col space-x-0 space-y-2 items-start",
+            !isCollapsed && className?.includes("flex-col") && "flex-col space-x-0 space-y-2 items-start",
             className
         )}>
             {routes.map((route) => (
