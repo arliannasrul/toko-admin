@@ -7,6 +7,7 @@ import db from '@/lib/db';
 import { ThemeToggle } from './theme-toggle';
 import Image from 'next/image';
 import { UserNav } from './user-nav';
+import { MobileAdminNav } from './mobile-admin-nav';
 
 interface NavbarProps {
   currentStoreId?: string;
@@ -27,30 +28,30 @@ const Navbar = async ({ currentStoreId }: NavbarProps) => {
   });
 
   return (
-    <header className="flex items-center justify-between p-4 h-16 border-b bg-white/10 backdrop-blur-md sticky top-0 z-50">
+    <header className="flex items-center justify-between p-4 h-16 border-b bg-white/70 dark:bg-slate-950/70 backdrop-blur-md sticky top-0 z-30 w-full">
       
-      {/* Bagian Kiri: Logo atau Nama Brand */}
-      <div>
+      {/* Bagian Kiri: Mobile Nav & Logo */}
+      <div className="flex items-center gap-x-4">
+        <div className="md:hidden">
+          <MobileAdminNav stores={stores} />
+        </div>
         <Link href="/" className="flex items-center gap-x-2 text-xl font-bold hover:text-gray-700">
           {stores.find(s => s.id === currentStoreId)?.logoUrl ? (
-             <div className="relative h-14 w-52">
+             <div className="relative h-10 w-32 md:w-40">
                <Image fill src={stores.find(s => s.id === currentStoreId)?.logoUrl!} alt="Logo" className="object-contain object-left" />
              </div>
           ) : (
-            "MitraSpace"
+            <span className="text-sm md:text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-sky-600 to-indigo-600">
+               {stores.find(s => s.id === currentStoreId)?.name || "MitraSpace"}
+            </span>
           )}
         </Link>
       </div>
 
-      {/* Bagian Tengah: Link Navigasi Utama */}
-      <div className="flex items-center space-x-4">
-        <StoreSwitcher items={stores} />
-        <MainNav className='mx-6'/>
-      </div>
-
       {/* Bagian Kanan: User & Settings */}
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-x-4">
         <ThemeToggle />
+        <div className="h-6 w-[1px] bg-slate-200 dark:bg-slate-800 mx-1" />
         <UserNav />
       </div>
 

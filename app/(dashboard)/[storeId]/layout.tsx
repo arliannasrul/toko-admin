@@ -1,6 +1,7 @@
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 import db from "@/lib/db";
+import { Sidebar } from "@/components/sidebar";
 import Navbar from "@/components/navbar";
 
 export default async function DashboardLayout({
@@ -17,23 +18,27 @@ export default async function DashboardLayout({
     redirect("/login");
   }
 
-  const store = await db.store.findFirst({
+  const stores = await db.store.findMany({
     where: {
-      id: params.storeId,
       userId,
     },
   });
+
+  const store = stores.find((s) => s.id === params.storeId);
 
   if (!store) {
     redirect(`/`);
   }
 
   return (
-    <>
-      <div className="">
+    <div className="flex h-screen overflow-hidden">
+      <Sidebar stores={stores} />
+      <div className="flex-1 flex flex-col overflow-y-auto">
         <Navbar currentStoreId={params.storeId} />
-        {children}
+        <main className="flex-1 p-4 md:p-8">
+          {children}
+        </main>
       </div>
-    </>
+    </div>
   );
 }
