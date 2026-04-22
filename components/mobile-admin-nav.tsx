@@ -39,16 +39,25 @@ export const MobileAdminNav = ({ stores }: MobileAdminNavProps) => {
                     <SheetHeader className="p-6 pb-2">
                         <SheetTitle className="flex items-center gap-x-2">
                             {currentStore?.logoUrl ? (
-                                <div className="relative h-10 w-32">
-                                    <Image fill src={currentStore.logoUrl} alt="Logo" className="object-contain object-left" />
+                                <div className="flex items-center gap-x-3">
+                                    <div className="relative h-12 w-12 rounded-full overflow-hidden border border-slate-200 dark:border-slate-800 shadow-sm">
+                                        <Image fill src={currentStore.logoUrl} alt="Logo" className="object-cover" />
+                                    </div>
+                                    <div className="flex flex-col">
+                                        <span className="font-bold text-base leading-tight">{currentStore?.name}</span>
+                                        <span className="text-[10px] text-slate-500 font-medium uppercase">MitraSpace.</span>
+                                    </div>
                                 </div>
                             ) : (
-                                <>
-                                    <div className="bg-slate-900 dark:bg-slate-100 p-1.5 rounded-lg">
-                                        <StoreIcon className="h-5 w-5 text-white dark:text-slate-900" />
+                                <div className="flex items-center gap-x-3">
+                                    <div className="h-12 w-12 bg-slate-900 dark:bg-slate-100 rounded-full flex items-center justify-center shadow-lg">
+                                        <StoreIcon className="h-6 w-6 text-white dark:text-slate-900" />
                                     </div>
-                                    <span className="font-bold text-xl tracking-tight">{currentStore?.name || "Admin Panel"}</span>
-                                </>
+                                    <div className="flex flex-col">
+                                        <span className="font-bold text-xl tracking-tight">MitraSpace.</span>
+                                        <span className="text-[10px] text-slate-500 font-medium uppercase">{currentStore?.name || "Panel Admin"}</span>
+                                    </div>
+                                </div>
                             )}
                         </SheetTitle>
                     </SheetHeader>

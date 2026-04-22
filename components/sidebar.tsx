@@ -35,31 +35,40 @@ export const Sidebar = ({ stores, currentStoreId }: SidebarProps) => {
           isCollapsed ? "justify-center" : "justify-start"
         )}>
            {stores.find(s => s.id === currentStoreId)?.logoUrl ? (
-             <div className={cn(
-               "relative h-10 w-10 min-w-[40px]",
-               !isCollapsed && "w-32 md:w-40"
-             )}>
-                <Image 
-                  fill 
-                  src={stores.find(s => s.id === currentStoreId)?.logoUrl!} 
-                  alt="Logo" 
-                  className={cn(
-                    "object-contain",
-                    isCollapsed ? "object-center" : "object-left"
-                  )} 
-                />
-             </div>
-           ) : (
-             <>
-               <div className="h-10 w-10 min-w-[40px] bg-slate-950 rounded-xl flex items-center justify-center">
-                  <span className="text-white text-xl font-bold italic">M</span>
+             <div className="flex items-center gap-x-3 overflow-hidden">
+               <div className="relative h-12 w-12 min-w-[48px] rounded-full overflow-hidden border border-slate-200 dark:border-slate-800 shadow-sm">
+                  <Image 
+                    fill 
+                    src={stores.find(s => s.id === currentStoreId)?.logoUrl!} 
+                    alt="Logo" 
+                    className="object-cover" 
+                  />
                </div>
                {!isCollapsed && (
-                 <span className="text-xl font-bold tracking-tight whitespace-nowrap">
-                   MitraSpace<span className="text-sky-600">.</span>
-                 </span>
+                 <div className="flex flex-col overflow-hidden">
+                   <span className="font-bold text-base truncate leading-tight">
+                     {stores.find(s => s.id === currentStoreId)?.name}
+                   </span>
+                   <span className="text-[10px] text-slate-500 font-medium uppercase tracking-tight">MitraSpace.</span>
+                 </div>
                )}
-             </>
+             </div>
+           ) : (
+             <div className="flex items-center gap-x-3 overflow-hidden">
+               <div className="h-12 w-12 min-w-[48px] bg-slate-950 rounded-full flex items-center justify-center shadow-lg">
+                  <span className="text-white text-2xl font-black italic">M</span>
+               </div>
+               {!isCollapsed && (
+                 <div className="flex flex-col overflow-hidden">
+                   <span className="text-xl font-bold tracking-tight whitespace-nowrap">
+                     MitraSpace<span className="text-sky-600">.</span>
+                   </span>
+                   <span className="text-[10px] text-slate-500 font-medium uppercase truncate">
+                     {stores.find(s => s.id === currentStoreId)?.name || "Panel Admin"}
+                   </span>
+                 </div>
+               )}
+             </div>
            )}
         </Link>
 
@@ -87,7 +96,7 @@ export const Sidebar = ({ stores, currentStoreId }: SidebarProps) => {
            </div>
            <MainNav 
              isCollapsed={isCollapsed} 
-             className="flex-col space-x-0 space-y-1 items-start px-0" 
+             className="flex-col space-x-0 space-y-2 items-start px-0" 
            />
         </div>
 
