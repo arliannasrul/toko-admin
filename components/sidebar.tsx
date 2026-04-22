@@ -9,12 +9,15 @@ import StoreSwitcher from "@/components/store-switcher";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
+import { ThemeToggle } from "./theme-toggle";
+import { UserNav } from "./user-nav";
 
 interface SidebarProps {
   stores: any[];
+  currentStoreId?: string;
 }
 
-export const Sidebar = ({ stores }: SidebarProps) => {
+export const Sidebar = ({ stores, currentStoreId }: SidebarProps) => {
   const [isCollapsed, setIsCollapsed] = useState(false);
 
   return (
@@ -27,19 +30,38 @@ export const Sidebar = ({ stores }: SidebarProps) => {
     >
       <div className="p-6 flex flex-col h-full">
         {/* Brand/Logo */}
-        <div className={cn(
-          "flex items-center gap-x-3 mb-10 transition-all overflow-hidden",
+        <Link href="/" className={cn(
+          "flex items-center gap-x-3 mb-10 transition-all overflow-hidden hover:opacity-80",
           isCollapsed ? "justify-center" : "justify-start"
         )}>
-           <div className="h-10 w-10 min-w-[40px] bg-slate-950 rounded-xl flex items-center justify-center">
-              <span className="text-white text-xl font-bold italic">M</span>
-           </div>
-           {!isCollapsed && (
-             <span className="text-xl font-bold tracking-tight whitespace-nowrap">
-               MitraSpace<span className="text-sky-600">.</span>
-             </span>
+           {stores.find(s => s.id === currentStoreId)?.logoUrl ? (
+             <div className={cn(
+               "relative h-10 w-10 min-w-[40px]",
+               !isCollapsed && "w-32 md:w-40"
+             )}>
+                <Image 
+                  fill 
+                  src={stores.find(s => s.id === currentStoreId)?.logoUrl!} 
+                  alt="Logo" 
+                  className={cn(
+                    "object-contain",
+                    isCollapsed ? "object-center" : "object-left"
+                  )} 
+                />
+             </div>
+           ) : (
+             <>
+               <div className="h-10 w-10 min-w-[40px] bg-slate-950 rounded-xl flex items-center justify-center">
+                  <span className="text-white text-xl font-bold italic">M</span>
+               </div>
+               {!isCollapsed && (
+                 <span className="text-xl font-bold tracking-tight whitespace-nowrap">
+                   MitraSpace<span className="text-sky-600">.</span>
+                 </span>
+               )}
+             </>
            )}
-        </div>
+        </Link>
 
         {/* Store Switcher */}
         <div className={cn(
@@ -71,15 +93,23 @@ export const Sidebar = ({ stores }: SidebarProps) => {
 
         {/* Support/Footer - optional */}
         <div className={cn(
-          "mt-auto pt-6 border-t border-slate-100 dark:border-slate-900 transition-all",
+          "mt-auto pt-6 border-t border-slate-100 dark:border-slate-900 transition-all flex flex-col gap-y-4",
           isCollapsed ? "items-center" : ""
         )}>
            {!isCollapsed && (
-             <div className="p-4 bg-sky-50 dark:bg-sky-500/10 rounded-2xl mb-4">
+             <div className="p-4 bg-sky-50 dark:bg-sky-500/10 rounded-2xl mb-2">
                 <p className="text-xs font-bold text-sky-600 dark:text-sky-400 mb-1">Butuh Bantuan?</p>
                 <p className="text-[10px] text-slate-500 dark:text-slate-400">Hubungi tim support kami jika ada kendala.</p>
              </div>
            )}
+           
+           <div className={cn(
+             "flex items-center w-full px-2",
+             isCollapsed ? "flex-col gap-y-4" : "justify-between"
+           )}>
+             <UserNav />
+             <ThemeToggle />
+           </div>
         </div>
       </div>
 

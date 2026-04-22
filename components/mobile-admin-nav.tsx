@@ -15,6 +15,7 @@ import {
     SheetHeader,
     SheetTitle
 } from "@/components/ui/sheet";
+import Image from "next/image";
 
 interface MobileAdminNavProps {
     stores: any[];
@@ -22,6 +23,9 @@ interface MobileAdminNavProps {
 
 export const MobileAdminNav = ({ stores }: MobileAdminNavProps) => {
     const [open, setOpen] = useState(false);
+    const params = useParams();
+    
+    const currentStore = stores.find(s => s.id === params.storeId);
 
     return (
         <div className="md:hidden">
@@ -34,10 +38,18 @@ export const MobileAdminNav = ({ stores }: MobileAdminNavProps) => {
                 <SheetContent side="left" className="w-[300px] p-0 flex flex-col bg-white dark:bg-slate-950">
                     <SheetHeader className="p-6 pb-2">
                         <SheetTitle className="flex items-center gap-x-2">
-                            <div className="bg-slate-900 dark:bg-slate-100 p-1.5 rounded-lg">
-                                <StoreIcon className="h-5 w-5 text-white dark:text-slate-900" />
-                            </div>
-                            <span className="font-bold text-xl tracking-tight">Admin Panel</span>
+                            {currentStore?.logoUrl ? (
+                                <div className="relative h-10 w-32">
+                                    <Image fill src={currentStore.logoUrl} alt="Logo" className="object-contain object-left" />
+                                </div>
+                            ) : (
+                                <>
+                                    <div className="bg-slate-900 dark:bg-slate-100 p-1.5 rounded-lg">
+                                        <StoreIcon className="h-5 w-5 text-white dark:text-slate-900" />
+                                    </div>
+                                    <span className="font-bold text-xl tracking-tight">{currentStore?.name || "Admin Panel"}</span>
+                                </>
+                            )}
                         </SheetTitle>
                     </SheetHeader>
                     
