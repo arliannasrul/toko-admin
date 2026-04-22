@@ -71,7 +71,7 @@ export const MobileAdminNav = ({ stores }: MobileAdminNavProps) => {
                         <div className="flex flex-col gap-y-2">
                             <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider px-2">Navigation</span>
                             <MainNav 
-                                className="flex-col items-start space-x-0 space-y-2 px-2" 
+                                className="flex-col items-start space-x-0 space-y-3 px-2" 
                                 onClick={() => setOpen(false)}
                             />
                         </div>

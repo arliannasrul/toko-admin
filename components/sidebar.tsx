@@ -96,7 +96,7 @@ export const Sidebar = ({ stores, currentStoreId }: SidebarProps) => {
            </div>
            <MainNav 
              isCollapsed={isCollapsed} 
-             className="flex-col space-x-0 space-y-2 items-start px-0" 
+             className="flex-col space-x-0 space-y-3 items-start px-0" 
            />
         </div>
 

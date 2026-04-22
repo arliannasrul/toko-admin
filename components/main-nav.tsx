@@ -84,9 +84,9 @@ export function MainNav({
                     href={route.href} 
                     onClick={onClick}
                     className={cn(
-                        "text-sm font-medium transition-colors hover:text-primary flex items-center gap-x-2",
-                        route.active ? "text-black dark:text-white" : "text-muted-foreground",
-                        isCollapsed && "justify-center w-full"
+                        "text-sm font-medium transition-colors hover:text-primary flex items-center gap-x-2 py-2 px-3 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-900 w-full",
+                        route.active ? "text-black dark:text-white bg-slate-100 dark:bg-slate-900" : "text-muted-foreground",
+                        isCollapsed && "justify-center px-0"
                     )}
                 >
                     <route.icon className={cn(
