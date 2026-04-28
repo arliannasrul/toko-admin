@@ -16,6 +16,30 @@ bun dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
+## Docker Setup
+
+You can also run this project using Docker and Docker Compose. This will set up the Next.js app, a PostgreSQL database, and pgAdmin for database management.
+
+1. **Prerequisites**: Make sure you have Docker and Docker Compose installed.
+2. **Environment Variables**: Create a `.env` file based on `.env.example` (or use your existing `.env`).
+3. **Run with Docker Compose**:
+   ```bash
+   docker compose up --build
+   ```
+4. **Access the services**:
+   - **App**: [http://localhost:3000](http://localhost:3000)
+   - **pgAdmin**: [http://localhost:5050](http://localhost:5050) (Login with `admin@admin.com` / `admin123`)
+
+To run in the background:
+```bash
+docker compose up -d
+```
+
+To stop:
+```bash
+docker compose down
+```
+
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
